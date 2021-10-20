@@ -1,6 +1,6 @@
 import numpy as np
 
-from sunpy.visualization.animator.base import ArrayAnimator, edges_to_centers_nd
+from .base import ArrayAnimator, edges_to_centers_nd
 
 __all__ = ['LineAnimator']
 

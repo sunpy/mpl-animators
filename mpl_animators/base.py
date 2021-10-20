@@ -8,7 +8,10 @@ import mpl_toolkits.axes_grid1.axes_size as Size
 import numpy as np
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-import astropy.units as u
+try:
+    from astropy import units
+except ImportError:
+    units = None
 
 __all__ = ['BaseFuncAnimator', 'ArrayAnimator']
 
@@ -634,7 +637,7 @@ class ArrayAnimator(BaseFuncAnimator, metaclass=abc.ABCMeta):
         ax_ind = self.slider_axes[slider.slider_ind]
         # Update slider label to reflect real world values in axis_ranges.
         label = self.axis_ranges[ax_ind](ind)
-        if isinstance(label, u.Quantity):
+        if units is not None and isinstance(label, units.Quantity):
             slider.valtext.set_text(label.to_string(precision=5,
                                                     format='latex',
                                                     subfmt='inline'))

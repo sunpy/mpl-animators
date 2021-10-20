@@ -1,6 +1,6 @@
 import matplotlib as mpl
 
-from sunpy.visualization.animator.base import ArrayAnimator
+from .base import ArrayAnimator
 
 __all__ = ['ImageAnimator']
 

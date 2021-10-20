@@ -6,8 +6,8 @@ import astropy.units as u
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.wcs.wcsapi import BaseLowLevelWCS
 
-from sunpy.extern import modest_image
-from sunpy.visualization.animator.base import ArrayAnimator
+from mpl_animators.extern import modest_image
+from .base import ArrayAnimator
 
 __all__ = ['ArrayAnimatorWCS']
 
