@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
-from sunpy.tests.helpers import figure_test
-from sunpy.visualization.animator import ArrayAnimator, BaseFuncAnimator, LineAnimator, base
+from mpl_animators.tests.helpers import figure_test
+from mpl_animators import ArrayAnimator, BaseFuncAnimator, LineAnimator, base
 
 
 class FuncAnimatorTest(BaseFuncAnimator):
