@@ -46,7 +46,6 @@ stages:
         submodules: false
         coverage: codecov
         toxdeps: tox-pypi-filter
-        posargs: -n=4
         envs:
           - linux: codestyle
             name: style_check
@@ -64,7 +63,6 @@ stages:
         submodules: false
         coverage: codecov
         toxdeps: tox-pypi-filter
-        posargs: -n=4
         libraries:
           apt:
             - graphviz
