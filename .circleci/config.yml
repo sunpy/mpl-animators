@@ -57,7 +57,7 @@ jobs:
       jobname:
         type: string
     docker:
-      - image: circleci/python:3.9
+      - image: circleci/python:3.8
     environment:
       TOXENV: << parameters.jobname >>
       GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_81487513a647e1b6ec0b73b589be0ba5
