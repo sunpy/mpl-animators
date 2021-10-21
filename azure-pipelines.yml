@@ -74,7 +74,7 @@ stages:
             pytest: false
 
   # On branches which aren't main, and not Pull Requests, build the wheels but only upload them on tags
-  - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Build.Reason'], 'Manual'))) }}:
+  - ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
     - stage: Release
       dependsOn: SecondPhaseTests
       jobs:
