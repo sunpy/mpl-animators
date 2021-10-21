@@ -16,7 +16,7 @@ except ImportError:
 __all__ = ['BaseFuncAnimator', 'ArrayAnimator']
 
 
-class BaseFuncAnimator:
+class BaseFuncAnimator(metaclass=abc.ABCMeta):
     """
     Create a Matplotlib backend independent data explorer which allows
     definition of figure update functions for each slider.
@@ -195,6 +195,7 @@ class BaseFuncAnimator:
 
         return ani
 
+    @abc.abstractmethod
     def plot_start_image(self, ax):
         """
         This method creates the initial image on the `matplotlib.axes.Axes`.
