@@ -1,10 +1,10 @@
-from pathlib import Path
 from functools import wraps
+from pathlib import Path
 
-import pytest
+import astropy
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import astropy
+import pytest
 
 
 def get_hash_library_name():

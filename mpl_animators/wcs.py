@@ -1,12 +1,12 @@
 from functools import partial
 
-import numpy as np
-
 import astropy.units as u
+import numpy as np
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.wcs.wcsapi import BaseLowLevelWCS
 
 from mpl_animators.extern import modest_image
+
 from .base import ArrayAnimator
 
 __all__ = ['ArrayAnimatorWCS']
