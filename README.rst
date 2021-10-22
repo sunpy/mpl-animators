@@ -1,6 +1,8 @@
 An interative animation framework for matplotlib
 ------------------------------------------------
 
+This package has been spun out of ``sunpy`` to be more generally useful.
+
 License
 -------
 
