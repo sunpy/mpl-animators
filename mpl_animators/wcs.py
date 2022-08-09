@@ -244,7 +244,7 @@ class ArrayAnimatorWCS(ArrayAnimator):
         if self.ylim != 'dynamic':
             ylim = self.ylim
             if ylim == 'fixed':
-                ylim = (self.data.min(), self.data.max())
+                ylim = (float(self.data.min()), float(self.data.max()))
             ax.set_ylim(ylim)
 
         if self.ylabel:
@@ -277,8 +277,8 @@ class ArrayAnimatorWCS(ArrayAnimator):
 
         # If we are not setting ylim globally then we set it per frame.
         if self.ylim == 'dynamic':
-            self.axes.set_ylim(self.data[self.frame_index].min(),
-                               self.data[self.frame_index].max())
+            self.axes.set_ylim(float(self.data[self.frame_index].min()),
+                               float(self.data[self.frame_index].max()))
         slider.cval = val
 
     def plot_start_image_2d(self, ax):
