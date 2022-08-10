@@ -1,7 +1,7 @@
 changelog:
   exclude:
     authors:
-      - pre-commit[bot]
+      - pre-commit-ci
   categories:
     - title: Bug Fixes
       labels:
