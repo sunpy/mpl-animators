@@ -47,11 +47,7 @@ stages:
         coverage: codecov
         toxdeps: tox-pypi-filter
         envs:
-          - linux: codestyle
-            name: style_check
-            pytest: false
-            libraries: {}
-          - linux: py39
+          - linux: py310
 
   - stage: SecondPhaseTests
     displayName: Stage 2 Tests
@@ -67,8 +63,8 @@ stages:
           apt:
             - graphviz
         envs:
-          - macos: py37
-          - windows: py38
+          - macos: py38
+          - windows: py39
           - linux: build_docs
             posargs: " "
             pytest: false
