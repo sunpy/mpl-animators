@@ -74,6 +74,7 @@ jobs:
       - checkout
       - run: *skip-check
       - run: *merge-check
+      - run: *pyenv-install
       # Clear out all the ssh keys so that it always uses the write deploy key
       - run: ssh-add -D
       # Add private key for deploying to the figure tests repo
