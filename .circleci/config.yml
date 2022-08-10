@@ -20,11 +20,20 @@ merge-check: &merge-check
       git checkout -qf pr/$CIRCLE_PR_NUMBER/merge
     fi
 
-apt-run: &apt-install
-  name: Install apt packages
+apt-run: &pyenv-install
+  name: Install other python versions
   command: |
-    sudo apt update
-    sudo apt install -y libopenjp2-7 python3-dev
+    pyenv global 3.10.6
+    if [[ $TOXENV = *39* ]]
+    then
+      pyenv install 3.9.13
+      pyenv global 3.9.13 3.10.6
+    fi
+    if [[ $TOXENV = *38* ]]
+    then
+      pyenv install 3.8.13
+      pyenv global 3.8.13 3.10.6
+    fi
 
 jobs:
   figure:
@@ -32,7 +41,7 @@ jobs:
       jobname:
         type: string
     docker:
-      - image: circleci/python:3.8
+      - image: cimg/python:3.10.6
     environment:
       TOXENV=<< parameters.jobname >>
     steps:
@@ -40,7 +49,7 @@ jobs:
       - checkout
       - run: *skip-check
       - run: *merge-check
-      - run: *apt-install
+      - run: *pyenv-install
       - run: pip install --user -U tox tox-pypi-filter
       - run: tox -v
       - run:
@@ -57,7 +66,7 @@ jobs:
       jobname:
         type: string
     docker:
-      - image: circleci/python:3.8
+      - image: cimg/python:3.10
     environment:
       TOXENV: << parameters.jobname >>
       GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_81487513a647e1b6ec0b73b589be0ba5
@@ -65,7 +74,6 @@ jobs:
       - checkout
       - run: *skip-check
       - run: *merge-check
-      - run: *apt-install
       # Clear out all the ssh keys so that it always uses the write deploy key
       - run: ssh-add -D
       # Add private key for deploying to the figure tests repo
@@ -100,7 +108,7 @@ workflows:
             parameters:
               jobname:
                 - "py310-figure"
-                - "py39-figure-devdeps"
+                - "py310-figure-devdeps"
                 - "py38-figure-oldestdeps"
 
       - deploy-reference-images:
@@ -109,11 +117,11 @@ workflows:
             parameters:
               jobname:
                 - "py310-figure"
-                - "py39-figure-devdeps"
+                - "py310-figure-devdeps"
                 - "py38-figure-oldestdeps"
           requires:
             - "py310-figure"
-            - "py39-figure-devdeps"
+            - "py310-figure-devdeps"
             - "py38-figure-oldestdeps"
           filters:
             branches:
