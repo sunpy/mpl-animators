@@ -99,19 +99,22 @@ workflows:
           matrix:
             parameters:
               jobname:
-                - "py38-figure"
+                - "py310-figure"
                 - "py39-figure-devdeps"
+                - "py38-figure-oldestdeps"
 
       - deploy-reference-images:
           name: baseline-<< matrix.jobname >>
           matrix:
             parameters:
               jobname:
-                - "py38-figure"
+                - "py310-figure"
                 - "py39-figure-devdeps"
+                - "py38-figure-oldestdeps"
           requires:
-            - "py38-figure"
+            - "py310-figure"
             - "py39-figure-devdeps"
+            - "py38-figure-oldestdeps"
           filters:
             branches:
               only:
