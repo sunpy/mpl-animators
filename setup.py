@@ -19,5 +19,4 @@ except Exception:
 setup(
     use_scm_version={'write_to': os.path.join('mpl_animators', 'version.py'),
                      'write_to_template': VERSION_TEMPLATE},
-
 )

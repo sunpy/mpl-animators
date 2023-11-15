@@ -1,8 +1,10 @@
-An interative animation framework for matplotlib
+An interactive animation framework for matplotlib
 ------------------------------------------------
 
-This package has been spun out of ``sunpy`` to be more generally useful.
+This is for creating interactive animations with matplotlib.
+It is designed to handle N-dimensional data, and can be used to create animations.
 
+This package has been spun out of ``sunpy`` to be more generally useful.
 
 License
 -------
@@ -12,7 +14,6 @@ the terms of the BSD 3-Clause license. This package is based upon
 the `Openastronomy packaging guide <https://github.com/OpenAstronomy/packaging-guide>`_
 which is licensed under the BSD 3-clause licence. See the licenses folder for
 more information.
-
 
 Contributing
 ------------
