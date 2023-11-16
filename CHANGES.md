@@ -1,21 +1,23 @@
-## v1.1.0 - 2022-08-10
+# Changelog #
 
-### What's Changed
+## v1.1.0 - 2022-08-10 ##
 
-#### Bug Fixes
+### What's Changed ###
 
-- Fix setting y limits when data is a dask array by @SolarDrew in https://github.com/sunpy/mpl-animators/pull/11
+#### Bug Fixes ####
 
-#### Other Changes
+- Fix setting y limits when data is a dask array by SolarDrew in <https://github.com/sunpy/mpl-animators/pull/11>
 
-- Add changelog config and bump minimum Python version to 3.8 by @Cadair in https://github.com/sunpy/mpl-animators/pull/12
+#### Other Changes ####
 
-### New Contributors
+- Add changelog config and bump minimum Python version to 3.8 by Cadair in <https://github.com/sunpy/mpl-animators/pull/12>
 
-- @SolarDrew made their first contribution in https://github.com/sunpy/mpl-animators/pull/11
+#### New Contributors ####
 
-**Full Changelog**: https://github.com/sunpy/mpl-animators/compare/v1.0.1...v1.1.0
+- @SolarDrew made their first contribution in <https://github.com/sunpy/mpl-animators/pull/11>
 
-## v1.0.0
+**Full Changelog**: <https://github.com/sunpy/mpl-animators/compare/v1.0.1...v1.1.0>
+
+## v1.0.0 ##
 
 Initial release with code copied from `sunpy.visualisation.animators`.
