@@ -23,16 +23,11 @@ merge-check: &merge-check
 apt-run: &pyenv-install
   name: Install other python versions
   command: |
-    pyenv global 3.10.6
+    pyenv global 3.11.6
     if [[ $TOXENV = *39* ]]
     then
-      pyenv install 3.9.13
-      pyenv global 3.9.13 3.10.6
-    fi
-    if [[ $TOXENV = *38* ]]
-    then
-      pyenv install 3.8.13
-      pyenv global 3.8.13 3.10.6
+      pyenv install 3.9.18
+      pyenv global 3.9.18 3.11.6
     fi
 
 jobs:
@@ -41,7 +36,7 @@ jobs:
       jobname:
         type: string
     docker:
-      - image: cimg/python:3.10.6
+      - image: cimg/python:3.11.6
     environment:
       TOXENV=<< parameters.jobname >>
     steps:
@@ -66,7 +61,7 @@ jobs:
       jobname:
         type: string
     docker:
-      - image: cimg/python:3.10
+      - image: cimg/python:3.11.6
     environment:
       TOXENV: << parameters.jobname >>
       GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_81487513a647e1b6ec0b73b589be0ba5
@@ -108,22 +103,22 @@ workflows:
           matrix:
             parameters:
               jobname:
-                - "py310-figure"
-                - "py310-figure-devdeps"
-                - "py38-figure-oldestdeps"
+                - "py311-figure"
+                - "py311-figure-devdeps"
+                - "py39-figure-oldestdeps"
 
       - deploy-reference-images:
           name: baseline-<< matrix.jobname >>
           matrix:
             parameters:
               jobname:
-                - "py310-figure"
-                - "py310-figure-devdeps"
-                - "py38-figure-oldestdeps"
+                - "py311-figure"
+                - "py311-figure-devdeps"
+                - "py39-figure-oldestdeps"
           requires:
-            - "py310-figure"
-            - "py310-figure-devdeps"
-            - "py38-figure-oldestdeps"
+            - "py311-figure"
+            - "py311-figure-devdeps"
+            - "py39-figure-oldestdeps"
           filters:
             branches:
               only:
