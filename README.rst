@@ -1,5 +1,5 @@
 An interactive animation framework for matplotlib
-------------------------------------------------
+-------------------------------------------------
 
 This is for creating interactive animations with matplotlib.
 It is designed to handle N-dimensional data, and can be used to create animations.
