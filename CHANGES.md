@@ -1,23 +1,44 @@
-# Changelog #
+# Changelog
 
-## v1.1.0 - 2022-08-10 ##
+## v1.1.1 - 2023-11-17
 
-### What's Changed ###
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+### What's Changed
 
-#### Bug Fixes ####
+#### Other Changes
 
-- Fix setting y limits when data is a dask array by SolarDrew in <https://github.com/sunpy/mpl-animators/pull/11>
+- Update for tox4 by @ConorMacBride in https://github.com/sunpy/mpl-animators/pull/20
+- Minor tweaks to CI - No actions by @nabobalis in https://github.com/sunpy/mpl-animators/pull/28
+- Move to actions by @nabobalis in https://github.com/sunpy/mpl-animators/pull/29
+- Bump stefanzweifel/git-auto-commit-action from 4 to 5 by @dependabot in https://github.com/sunpy/mpl-animators/pull/30
+- Bump actions/checkout from 2 to 4 by @dependabot in https://github.com/sunpy/mpl-animators/pull/31
 
-#### Other Changes ####
+### New Contributors
 
-- Add changelog config and bump minimum Python version to 3.8 by Cadair in <https://github.com/sunpy/mpl-animators/pull/12>
+- @ConorMacBride made their first contribution in https://github.com/sunpy/mpl-animators/pull/20
+- @nabobalis made their first contribution in https://github.com/sunpy/mpl-animators/pull/28
+- @dependabot made their first contribution in https://github.com/sunpy/mpl-animators/pull/30
 
-#### New Contributors ####
+**Full Changelog**: https://github.com/sunpy/mpl-animators/compare/v1.1.0...v1.1.1
 
-- @SolarDrew made their first contribution in <https://github.com/sunpy/mpl-animators/pull/11>
+## v1.1.0 - 2022-08-10
 
-**Full Changelog**: <https://github.com/sunpy/mpl-animators/compare/v1.0.1...v1.1.0>
+### What's Changed
 
-## v1.0.0 ##
+#### Bug Fixes
+
+- Fix setting y limits when data is a dask array by SolarDrew in [https://github.com/sunpy/mpl-animators/pull/11](https://github.com/sunpy/mpl-animators/pull/11)
+
+#### Other Changes
+
+- Add changelog config and bump minimum Python version to 3.8 by Cadair in [https://github.com/sunpy/mpl-animators/pull/12](https://github.com/sunpy/mpl-animators/pull/12)
+
+#### New Contributors
+
+- @SolarDrew made their first contribution in [https://github.com/sunpy/mpl-animators/pull/11](https://github.com/sunpy/mpl-animators/pull/11)
+
+**Full Changelog**: [https://github.com/sunpy/mpl-animators/compare/v1.0.1...v1.1.0](https://github.com/sunpy/mpl-animators/compare/v1.0.1...v1.1.0)
+
+## v1.0.0
 
 Initial release with code copied from `sunpy.visualisation.animators`.
