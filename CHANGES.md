@@ -1,9 +1,20 @@
 # Changelog
 
+## v1.1.2 - 2024-02-07
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+### What's Changed
+
+#### Other Changes
+
+* remove old circleci webhook config by @Cadair in https://github.com/sunpy/mpl-animators/pull/36
+* Added Gallery + Update Package template by @nabobalis in https://github.com/sunpy/mpl-animators/pull/37
+
+**Full Changelog**: https://github.com/sunpy/mpl-animators/compare/v1.1.1...v1.1.2
+
 ## v1.1.1 - 2023-11-17
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
-
 ### What's Changed
 
 #### Other Changes
