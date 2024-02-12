@@ -2,7 +2,7 @@ import matplotlib as mpl
 
 from .base import ArrayAnimator
 
-__all__ = ['ImageAnimator']
+__all__ = ["ImageAnimator"]
 
 
 class ImageAnimator(ArrayAnimator):
@@ -45,7 +45,7 @@ class ImageAnimator(ArrayAnimator):
             raise ValueError("There can only be two spatial axes")
         # Define number of slider axes.
         self.naxis = data.ndim
-        self.num_sliders = self.naxis-2
+        self.num_sliders = self.naxis - 2
         # Define marker to determine if plot axes values are supplied via array of
         # pixel values or min max pair. This will determine the type of image produced
         # and hence how to plot and update it.
@@ -68,8 +68,7 @@ class ImageAnimator(ArrayAnimator):
             extent.append(self.axis_ranges[i][0])
             extent.append(self.axis_ranges[i][-1])
 
-        imshow_args = {'interpolation': 'nearest',
-                       'origin': 'lower'}
+        imshow_args = {"interpolation": "nearest", "origin": "lower"}
         imshow_args.update(self.imshow_kwargs)
 
         # If value along an axis is set with an array, generate a NonUniformImage
@@ -82,15 +81,14 @@ class ImageAnimator(ArrayAnimator):
             # Initialize a NonUniformImage with the relevant data and axis values and
             # add the image to the axes.
             im = mpl.image.NonUniformImage(ax, **imshow_args)
-            im.set_data(self.axis_ranges[self.image_axes[0]],
-                        self.axis_ranges[self.image_axes[1]], data)
+            im.set_data(self.axis_ranges[self.image_axes[0]], self.axis_ranges[self.image_axes[1]], data)
             ax.add_image(im)
             # Define the xlim and ylim from the pixel edges.
             ax.set_xlim(self.extent[0], self.extent[1])
             ax.set_ylim(self.extent[2], self.extent[3])
         else:
             # Else produce a more basic plot with regular axes.
-            imshow_args.update({'extent': extent})
+            imshow_args.update({"extent": extent})
             im = ax.imshow(self.data[self.frame_index], **imshow_args)
         if self.if_colorbar:
             self._add_colorbar(im)
@@ -110,8 +108,7 @@ class ImageAnimator(ArrayAnimator):
                     data = self.data[self.frame_index].transpose()
                 else:
                     data = self.data[self.frame_index]
-                im.set_data(self.axis_ranges[self.image_axes[0]],
-                            self.axis_ranges[self.image_axes[1]], data)
+                im.set_data(self.axis_ranges[self.image_axes[0]], self.axis_ranges[self.image_axes[1]], data)
             else:
                 im.set_array(self.data[self.frame_index])
             slider.cval = val
