@@ -6,6 +6,13 @@ It is designed to handle N-dimensional data, and can be used to create animation
 
 This package has been spun out of ``sunpy`` to be more generally useful.
 
+Testing and CI Notes
+--------------------
+
+Because this repo is heavily dependent on figure tests, all the CI jobs (other
+than publish) run on Circle CI, there are no test runs on GH Actions. The
+`-figure` test tox jobs run all tests, figure and non-figure.
+
 License
 -------
 
