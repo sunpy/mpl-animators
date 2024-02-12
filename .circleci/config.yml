@@ -102,6 +102,7 @@ workflows:
   figure-tests:
     # This is very verbose, but we can't use `matrix:` and specify the docker container per-job
     # which massively slows down the build as we have to compile python.
+    # IF YOU CHANGE THESE BUILDS UPDATE THE GILES CONFIG IN pyproject.toml
     jobs:
       - figure:
           name: "py312-figure"

@@ -10,17 +10,22 @@ build-backend = 'setuptools.build_meta'
   [ tool.gilesbot.circleci_artifacts ]
     enabled = true
 
-  [ tool.gilesbot.circleci_artifacts.figure_report ]
-    url = ".tmp/py311-figure/figure_test_images/fig_comparison.html"
-    message = "Click details to see the figure test comparisons, for py311-figure."
+  [ tool.gilesbot.circleci_artifacts.py312_figure_report ]
+    url = ".tmp/py312-figure/figure_test_images/fig_comparison.html"
+    message = "Click details to see the figure test comparisons, for py312-figure."
     report_on_fail = true
 
-  [ tool.gilesbot.circleci_artifacts.figure_report_oldestdeps ]
+  [ tool.gilesbot.circleci_artifacts.py310_figure_report ]
+    url = ".tmp/py310-figure/figure_test_images/fig_comparison.html"
+    message = "Click details to see the figure test comparisons, for py310-figure."
+    report_on_fail = true
+
+  [ tool.gilesbot.circleci_artifacts.py39_figure_oldestdeps_report ]
     url = ".tmp/py39-figure-oldestdeps/figure_test_images/fig_comparison.html"
     message = "Click details to see the figure test comparisons for py39-figure-oldestdeps."
     report_on_fail = true
 
-  [ tool.gilesbot.circleci_artifacts.figure_report_devdeps ]
+  [ tool.gilesbot.circleci_artifacts.py311_figure_devdeps_report ]
     url = ".tmp/py311-figure-devdeps/figure_test_images/fig_comparison.html"
     message = "Click details to see the figure test comparisons for py311-figure-devdeps."
     report_on_fail = true
