@@ -20,62 +20,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  core:
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
-    with:
-      submodules: false
-      coverage: codecov
-      toxdeps: tox-pypi-filter
-      posargs: -n auto
-      envs: |
-        - linux: py311
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-  test:
-    needs: [core]
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
-    with:
-      submodules: false
-      coverage: codecov
-      toxdeps: tox-pypi-filter
-      posargs: -n auto
-      envs: |
-        - windows: py310
-        - macos: py39
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-  docs:
-    needs: [core]
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
-    with:
-      default_python: '3.9'
-      submodules: false
-      pytest: false
-      toxdeps: tox-pypi-filter
-      cache-key: docs-${{ github.run_id }}
-      libraries: |
-        apt:
-          - graphviz
-      envs: |
-        - linux: build_docs
-
-  extra:
-    needs: [test]
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
-    with:
-      default_python: '3.9'
-      submodules: false
-      coverage: codecov
-      toxdeps: tox-pypi-filter
-      posargs: -n auto
-      envs: |
-        - linux: py39-oldestdeps
-        - linux: py311-devdeps
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
   publish:
     # Build wheels when pushing to any branch except main
     # publish.yml will only publish if tagged ^v.*
