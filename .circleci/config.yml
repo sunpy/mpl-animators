@@ -20,31 +20,21 @@ merge-check: &merge-check
       git checkout -qf pr/$CIRCLE_PR_NUMBER/merge
     fi
 
-apt-run: &pyenv-install
-  name: Install other python versions
-  command: |
-    pyenv global 3.11.6
-    if [[ $TOXENV = *39* ]]
-    then
-      pyenv install 3.9.18
-      pyenv global 3.9.18 3.11.6
-    fi
-
 jobs:
   figure:
     parameters:
       jobname:
         type: string
+      image:
+        type: string
     docker:
-      - image: cimg/python:3.11.6
-    environment:
-      TOXENV=<< parameters.jobname >>
+      - image: << parameters.image >>
+    environment: TOXENV=<< parameters.jobname >>
     steps:
       - run: *no-backports
       - checkout
       - run: *skip-check
       - run: *merge-check
-      - run: *pyenv-install
       - run: pip install --user -U tox tox-pypi-filter
       - run: tox -v
       - run:
@@ -69,7 +59,6 @@ jobs:
       - checkout
       - run: *skip-check
       - run: *merge-check
-      - run: *pyenv-install
       # Clear out all the ssh keys so that it always uses the write deploy key
       - run: ssh-add -D
       # Add private key for deploying to the figure tests repo
@@ -99,13 +88,17 @@ workflows:
   figure-tests:
     jobs:
       - figure:
-          name: << matrix.jobname >>
-          matrix:
-            parameters:
-              jobname:
-                - "py311-figure"
-                - "py311-figure-devdeps"
-                - "py39-figure-oldestdeps"
+          name: "py311-figure"
+          jobname: "py311-figure"
+          image: "cimg/python:3.11"
+      - figure:
+          name: "py311-figure-devdeps"
+          jobname: "py311-figure-devdeps"
+          image: "cimg/python:3.11"
+      - figure:
+          name: "py39-figure-oldestdeps"
+          jobname: "py39-figure-oldestdeps"
+          image: "cimg/python:3.9"
 
       - deploy-reference-images:
           name: baseline-<< matrix.jobname >>
