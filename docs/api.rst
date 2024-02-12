@@ -1,1 +1,0 @@
-.. automodapi:: mpl_animators

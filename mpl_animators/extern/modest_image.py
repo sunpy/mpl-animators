@@ -4,53 +4,56 @@ set_extent.
 """
 # This file is copied from glue under the terms of the 3 Clause BSD licence. See licenses/GLUE.rst
 
+from __future__ import print_function, division
 
-import matplotlib as mpl
+import matplotlib
+rcParams = matplotlib.rcParams
 
-rcParams = mpl.rcParams
-
-import matplotlib.cbook as cbook
-import matplotlib.colors as mcolors
 import matplotlib.image as mi
+import matplotlib.colors as mcolors
+import matplotlib.cbook as cbook
+from matplotlib.transforms import IdentityTransform, Affine2D
+
 import numpy as np
-from matplotlib.transforms import Affine2D, IdentityTransform
 
 IDENTITY_TRANSFORM = IdentityTransform()
 
 
 class ModestImage(mi.AxesImage):
+
     """
     Computationally modest image class.
 
-    ModestImage is an extension of the Matplotlib AxesImage class better
-    suited for the interactive display of larger images. Before drawing,
-    ModestImage resamples the data array based on the screen resolution
-    and view window. This has very little affect on the appearance of
-    the image, but can substantially cut down on computation since
-    calculations of unresolved or clipped pixels are skipped.
+    ModestImage is an extension of the Matplotlib AxesImage class
+    better suited for the interactive display of larger images. Before
+    drawing, ModestImage resamples the data array based on the screen
+    resolution and view window. This has very little affect on the
+    appearance of the image, but can substantially cut down on
+    computation since calculations of unresolved or clipped pixels
+    are skipped.
 
     The interface of ModestImage is the same as AxesImage. However, it
-    does not currently support setting the 'extent' property. There may
-    also be weird coordinate warping operations for images that I'm not
-    aware of. Don't expect those to work either.
+    does not currently support setting the 'extent' property. There
+    may also be weird coordinate warping operations for images that
+    I'm not aware of. Don't expect those to work either.
     """
 
     def __init__(self, *args, **kwargs):
         self._pressed = False
         self._full_res = None
-        self._full_extent = kwargs.get("extent", None)
-        super().__init__(*args, **kwargs)
+        self._full_extent = kwargs.get('extent', None)
+        super(ModestImage, self).__init__(*args, **kwargs)
         self.invalidate_cache()
-        self.axes.figure.canvas.mpl_connect("button_press_event", self._press)
-        self.axes.figure.canvas.mpl_connect("button_release_event", self._release)
-        self.axes.figure.canvas.mpl_connect("resize_event", self._resize)
+        self.axes.figure.canvas.mpl_connect('button_press_event', self._press)
+        self.axes.figure.canvas.mpl_connect('button_release_event', self._release)
+        self.axes.figure.canvas.mpl_connect('resize_event', self._resize)
 
         self._timer = self.axes.figure.canvas.new_timer(interval=500)
         self._timer.single_shot = True
         self._timer.add_callback(self._resize_paused)
 
     def remove(self):
-        super().remove()
+        super(ModestImage, self).remove()
         self._timer.stop()
         self._timer = None
 
@@ -76,20 +79,20 @@ class ModestImage(mi.AxesImage):
 
     def set_data(self, A):
         """
-        Set the image array.
+        Set the image array
 
         ACCEPTS: numpy/PIL Image A
         """
         self._full_res = A
         self._A = A
 
-        if self._A.dtype != np.uint8 and not np.can_cast(self._A.dtype, float):
-            msg = "Image data can not convert to float"
-            raise TypeError(msg)
+        if self._A.dtype != np.uint8 and not np.can_cast(self._A.dtype,
+                                                         float):
+            raise TypeError("Image data can not convert to float")
 
-        if self._A.ndim not in (2, 3) or (self._A.ndim == 3 and self._A.shape[-1] not in (3, 4)):
-            msg = "Invalid dimensions for image data"
-            raise TypeError(msg)
+        if (self._A.ndim not in (2, 3) or
+                (self._A.ndim == 3 and self._A.shape[-1] not in (3, 4))):
+            raise TypeError("Invalid dimensions for image data")
 
         self.invalidate_cache()
 
@@ -110,7 +113,7 @@ class ModestImage(mi.AxesImage):
         if self._A is None or self._A.shape is None:
             return False
         else:
-            return super().contains(mouseevent)
+            return super(ModestImage, self).contains(mouseevent)
 
     def set_extent(self, extent):
         self._full_extent = extent
@@ -118,14 +121,14 @@ class ModestImage(mi.AxesImage):
         mi.AxesImage.set_extent(self, extent)
 
     def get_array(self):
-        """
-        Override to return the full-resolution array.
-        """
+        """Override to return the full-resolution array"""
         return self._full_res
 
     @property
     def _pixel2world(self):
+
         if self._pixel2world_cache is None:
+
             # Pre-compute affine transforms to convert between the 'world'
             # coordinates of the axes (what is shown by the axis labels) to
             # 'pixel' coordinates in the underlying array.
@@ -133,16 +136,17 @@ class ModestImage(mi.AxesImage):
             extent = self._full_extent
 
             if extent is None:
+
                 self._pixel2world_cache = IDENTITY_TRANSFORM
 
             else:
+
                 self._pixel2world_cache = Affine2D()
 
                 self._pixel2world.translate(+0.5, +0.5)
 
-                self._pixel2world.scale(
-                    (extent[1] - extent[0]) / self._full_res.shape[1], (extent[3] - extent[2]) / self._full_res.shape[0]
-                )
+                self._pixel2world.scale((extent[1] - extent[0]) / self._full_res.shape[1],
+                                        (extent[3] - extent[2]) / self._full_res.shape[0])
 
                 self._pixel2world.translate(extent[0], extent[2])
 
@@ -165,21 +169,16 @@ class ModestImage(mi.AxesImage):
         # Find out how we need to slice the array to make sure we match the
         # resolution of the display. We pass self._world2pixel which matters
         # for cases where the extent has been set.
-        x0, x1, sx, y0, y1, sy = extract_matched_slices(
-            axes=self.axes, shape=self._full_res.shape, transform=self._world2pixel
-        )
+        x0, x1, sx, y0, y1, sy = extract_matched_slices(axes=self.axes,
+                                                        shape=self._full_res.shape,
+                                                        transform=self._world2pixel)
 
         # Check whether we've already calculated what we need, and if so just
         # return without doing anything further.
-        if (
-            self._bounds is not None
-            and sx >= self._sx
-            and sy >= self._sy
-            and x0 >= self._bounds[0]
-            and x1 <= self._bounds[1]
-            and y0 >= self._bounds[2]
-            and y1 <= self._bounds[3]
-        ):
+        if (self._bounds is not None and
+                sx >= self._sx and sy >= self._sy and
+                x0 >= self._bounds[0] and x1 <= self._bounds[1] and
+                y0 >= self._bounds[2] and y1 <= self._bounds[3]):
             return
 
         # Slice the array using the slices determined previously to optimally
@@ -194,10 +193,10 @@ class ModestImage(mi.AxesImage):
         # demonstration of why origin='upper' and extent=None needs to be
         # special-cased.
 
-        if self.origin == "upper" and self._full_extent is None:
-            xmin, xmax, ymin, ymax = x0 - 0.5, x1 - 0.5, y1 - 0.5, y0 - 0.5
+        if self.origin == 'upper' and self._full_extent is None:
+            xmin, xmax, ymin, ymax = x0 - .5, x1 - .5, y1 - .5, y0 - .5
         else:
-            xmin, xmax, ymin, ymax = x0 - 0.5, x1 - 0.5, y0 - 0.5, y1 - 0.5
+            xmin, xmax, ymin, ymax = x0 - .5, x1 - .5, y0 - .5, y1 - .5
 
         xmin, ymin, xmax, ymax = self._pixel2world.transform([(xmin, ymin), (xmax, ymax)]).ravel()
 
@@ -219,18 +218,16 @@ class ModestImage(mi.AxesImage):
             self._scale_to_res()
         # Due to a bug in Matplotlib, we need to return here if all values
         # in the array are masked.
-        if hasattr(self._A, "mask") and np.all(self._A.mask):
+        if hasattr(self._A, 'mask') and np.all(self._A.mask):
             return
-        super().draw(renderer, *args, **kwargs)
+        super(ModestImage, self).draw(renderer, *args, **kwargs)
 
 
 def main():
     from time import time
-
     import matplotlib.pyplot as plt
-
     x, y = np.mgrid[0:2000, 0:2000]
-    data = np.sin(x / 10.0) * np.cos(y / 30.0)
+    data = np.sin(x / 10.) * np.cos(y / 30.)
 
     f = plt.figure()
     ax = f.add_subplot(111)
@@ -238,61 +235,38 @@ def main():
     # try switching between
     artist = ModestImage(ax, data=data)
 
-    ax.set_aspect("equal")
+    ax.set_aspect('equal')
     artist.norm.vmin = -1
     artist.norm.vmax = 1
 
     ax.add_artist(artist)
 
-    time()
+    t0 = time()
     plt.gcf().canvas.draw_idle()
-    time()
+    t1 = time()
+
+    print("Draw time for %s: %0.1f ms" % (artist.__class__.__name__,
+                                          (t1 - t0) * 1000))
 
     plt.show()
 
 
-def imshow(
-    axes,
-    X,
-    cmap=None,
-    norm=None,
-    aspect=None,
-    interpolation=None,
-    alpha=None,
-    vmin=None,
-    vmax=None,
-    origin=None,
-    extent=None,
-    shape=None,
-    filternorm=1,
-    filterrad=4.0,
-    imlim=None,
-    resample=None,
-    url=None,
-    **kwargs,
-):
-    """
-    Similar to matplotlib's imshow command, but produces a ModestImage.
+def imshow(axes, X, cmap=None, norm=None, aspect=None,
+           interpolation=None, alpha=None, vmin=None, vmax=None,
+           origin=None, extent=None, shape=None, filternorm=1,
+           filterrad=4.0, imlim=None, resample=None, url=None, **kwargs):
+    """Similar to matplotlib's imshow command, but produces a ModestImage
 
     Unlike matplotlib version, must explicitly specify axes
     """
     if norm is not None:
-        assert isinstance(norm, mcolors.Normalize)
+        assert(isinstance(norm, mcolors.Normalize))
     if aspect is None:
-        aspect = rcParams["image.aspect"]
+        aspect = rcParams['image.aspect']
     axes.set_aspect(aspect)
-    im = ModestImage(
-        axes,
-        cmap=cmap,
-        norm=norm,
-        interpolation=interpolation,
-        origin=origin,
-        extent=extent,
-        filternorm=filternorm,
-        filterrad=filterrad,
-        resample=resample,
-        **kwargs,
-    )
+    im = ModestImage(axes, cmap=cmap, norm=norm, interpolation=interpolation,
+                     origin=origin, extent=extent, filternorm=filternorm,
+                     filterrad=filterrad, resample=resample, **kwargs)
 
     im.set_data(X)
     im.set_alpha(alpha)
@@ -326,17 +300,21 @@ def imshow(
     return im
 
 
-def extract_matched_slices(axes=None, shape=None, extent=None, transform=IDENTITY_TRANSFORM):
-    """
-    Determine the slice parameters to use, matched to the screen.
+def extract_matched_slices(axes=None, shape=None, extent=None,
+                           transform=IDENTITY_TRANSFORM):
+    """Determine the slice parameters to use, matched to the screen.
 
     :param ax: Axes object to query. It's extent and pixel size
-        determine the slice parameters
+               determine the slice parameters
+
     :param shape: Tuple of the full image shape to slice into. Upper
-        boundaries for slices will be cropped to fit within this shape.
-    :rtype: tulpe of x0, x1, sx, y0, y1, sy Indexing the full resolution
-        array as array[y0:y1:sy, x0:x1:sx] returns a view well-matched
-        to the axes' resolution and extent
+               boundaries for slices will be cropped to fit within
+               this shape.
+
+    :rtype: tulpe of x0, x1, sx, y0, y1, sy
+
+    Indexing the full resolution array as array[y0:y1:sy, x0:x1:sx] returns
+    a view well-matched to the axes' resolution and extent
     """
 
     # Find extent in display pixels (this gives the resolution we need
@@ -363,8 +341,8 @@ def extract_matched_slices(axes=None, shape=None, extent=None, transform=IDENTIT
     x1 = _clip(ind1[0] + 5, 1, shape[1])
 
     # Determine the strides that can be used when extracting the array
-    sy = int(max(1, min((y1 - y0) / 5.0, np.ceil(abs((ind1[1] - ind0[1]) / ext[1])))))
-    sx = int(max(1, min((x1 - x0) / 5.0, np.ceil(abs((ind1[0] - ind0[0]) / ext[0])))))
+    sy = int(max(1, min((y1 - y0) / 5., np.ceil(abs((ind1[1] - ind0[1]) / ext[1])))))
+    sx = int(max(1, min((x1 - x0) / 5., np.ceil(abs((ind1[0] - ind0[0]) / ext[0])))))
 
     return x0, x1, sx, y0, y1, sy
 
