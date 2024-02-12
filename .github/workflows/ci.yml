@@ -20,6 +20,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  test:
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
+    with:
+      submodules: false
+      coverage: codecov
+      toxdeps: tox-pypi-filter
+      posargs: -n auto
+      envs: |
+        - windows: py311
+        - macos: py310
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
   publish:
     # Build wheels when pushing to any branch except main
     # publish.yml will only publish if tagged ^v.*
@@ -33,6 +46,7 @@ jobs:
         github.event_name == 'pull_request' &&
         contains(github.event.pull_request.labels.*.name, 'Run publish')
       )
+    needs: [test]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@main
     with:
       python-version: "3.10"
