@@ -15,6 +15,7 @@
 ## v1.1.1 - 2023-11-17
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
+
 ### What's Changed
 
 #### Other Changes
