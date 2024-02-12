@@ -55,12 +55,12 @@ class ArrayAnimatorWCS(ArrayAnimator):
           or `False` to display no ticks for this coord.
 
     ylim: `tuple` or `str`, optional
-       The yaxis limits to use when drawing a line plot, if 'fixed' then use
-       the global data limits, if 'dynamic' then set the y limit for each frame
-       individually (meaning the y limits change as you animate).
+        The yaxis limits to use when drawing a line plot, if 'fixed' then use
+        the global data limits, if 'dynamic' then set the y limit for each frame
+        individually (meaning the y limits change as you animate).
     ylabel: `string`, optional
-       The yaxis label to use when drawing a line plot. Setting the label on
-       the y-axis on an image plot should be done via ``coord_params``.
+        The yaxis label to use when drawing a line plot. Setting the label on
+        the y-axis on an image plot should be done via ``coord_params``.
     clip_interval : two-element `~astropy.units.Quantity`, optional
         If provided, the data for each step will be clipped to the percentile interval bounded by the two numbers.
     """
@@ -77,13 +77,17 @@ class ArrayAnimatorWCS(ArrayAnimator):
         **kwargs,
     ):
         if not isinstance(wcs, BaseLowLevelWCS):
-            raise ValueError("A WCS object should be provided that implements the astropy WCS API.")
+            msg = "A WCS object should be provided that implements the astropy WCS API."
+            raise TypeError(msg)
         if wcs.pixel_n_dim != data.ndim:
-            raise ValueError("Dimensionality of the data and WCS object do not match.")
+            msg = "Dimensionality of the data and WCS object do not match."
+            raise ValueError(msg)
         if len(slices) != wcs.pixel_n_dim:
-            raise ValueError("slices should be the same length as the number of pixel dimensions.")
+            msg = "slices should be the same length as the number of pixel dimensions."
+            raise ValueError(msg)
         if "x" not in slices:
-            raise ValueError("slices should contain at least 'x' to indicate the axis to plot on the x axis.")
+            msg = "slices should contain at least 'x' to indicate the axis to plot on the x axis."
+            raise ValueError(msg)
 
         self.plot_dimensionality = 1
 
@@ -101,7 +105,8 @@ class ArrayAnimatorWCS(ArrayAnimator):
         self.ylabel = ylabel
 
         if clip_interval is not None and len(clip_interval) != 2:
-            raise ValueError("A range of 2 values must be specified for clip_interval.")
+            msg = "A range of 2 values must be specified for clip_interval."
+            raise ValueError(msg)
 
         self.clip_interval = clip_interval
 
@@ -129,12 +134,12 @@ class ArrayAnimatorWCS(ArrayAnimator):
         This can return more than one world name per pixel dimension
         (i.e. lat & lon) so join them if there are.
         """
-        labels = []
         wal = np.array(self._get_wcs_labels())
         pixel_indicies = np.array([a not in ["x", "y"] for a in slices])
-        for sliced_axis in self.wcs.axis_correlation_matrix[:, pixel_indicies].T:
-            labels.append(" / ".join(list(map(str, wal[sliced_axis]))))
-
+        labels = [
+            " / ".join(list(map(str, wal[sliced_axis])))
+            for sliced_axis in self.wcs.axis_correlation_matrix[:, pixel_indicies].T
+        ]
         return labels[::-1]
 
     def _partial_pixel_to_world(self, pixel_dimension, pixel_coord):
@@ -178,16 +183,13 @@ class ArrayAnimatorWCS(ArrayAnimator):
             coord = axes.coords[coord_name]
             params = self.coord_params[coord_name]
 
-            format_unit = params.get("format_unit", None)
-            if format_unit:
+            if format_unit := params.get("format_unit", None):
                 coord.set_format_unit(format_unit)
 
-            major_formatter = params.get("major_formatter", None)
-            if major_formatter:
+            if major_formatter := params.get("major_formatter", None):
                 coord.set_major_formatter(major_formatter)
 
-            axislabel = params.get("axislabel", None)
-            if axislabel:
+            if axislabel := params.get("axislabel", None):
                 coord.set_axislabel(axislabel)
 
             grid = params.get("grid", None)
@@ -204,7 +206,8 @@ class ArrayAnimatorWCS(ArrayAnimator):
                 elif isinstance(ticks, dict):
                     coord.set_ticks(**ticks)
                 else:
-                    raise TypeError("The 'ticks' value in the coord_params dictionary must be a dict or a boolean.")
+                    msg = "The 'ticks' value in the coord_params dictionary must be a dict or a boolean."
+                    raise TypeError(msg)
 
     def _setup_main_axes(self):
         self.axes = self.fig.add_axes([0.1, 0.1, 0.8, 0.8], projection=self.wcs, slices=self.slices_wcsaxes)
@@ -272,8 +275,7 @@ class ArrayAnimatorWCS(ArrayAnimator):
         """
         if self.slices_wcsaxes.index("y") < self.slices_wcsaxes.index("x"):
             return self.data[self.frame_index].transpose()
-        else:
-            return self.data[self.frame_index]
+        return self.data[self.frame_index]
 
     def update_plot_1d(self, val, line, slider):
         """
@@ -292,7 +294,7 @@ class ArrayAnimatorWCS(ArrayAnimator):
         Setup an image plot.
         """
         imshow_args = {"interpolation": "nearest", "origin": "lower"}
-        imshow_args.update(self.imshow_kwargs)
+        imshow_args |= self.imshow_kwargs
 
         if self.clip_interval is not None:
             imshow_args["vmin"], imshow_args["vmax"] = self._get_2d_plot_limits()

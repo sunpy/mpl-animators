@@ -110,11 +110,12 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         self.imshow_kwargs = kwargs
 
         if len(slider_functions) != len(slider_ranges):
-            raise ValueError("slider_functions and slider_ranges must be the same length.")
+            msg = "slider_functions and slider_ranges must be the same length."
+            raise ValueError(msg)
 
-        if slider_labels is not None:
-            if len(slider_labels) != len(slider_functions):
-                raise ValueError("slider_functions and slider_labels must be the same length.")
+        if slider_labels is not None and len(slider_labels) != len(slider_functions):
+            msg = "slider_functions and slider_labels must be the same length."
+            raise ValueError(msg)
 
         self.num_sliders = len(slider_functions)
         self.slider_functions = slider_functions
@@ -198,12 +199,8 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         anim_kwargs = {
             "frames": list(range(startframe, endframe, stepframe)),
             "fargs": [im, self.sliders[slider]._slider],
-        }
-        anim_kwargs.update(kwargs)
-
-        ani = mplanim.FuncAnimation(anim_fig, self.slider_functions[slider], **anim_kwargs)
-
-        return ani
+        } | kwargs
+        return mplanim.FuncAnimation(anim_fig, self.slider_functions[slider], **anim_kwargs)
 
     @abc.abstractmethod
     def plot_start_image(self, ax):
@@ -225,7 +222,8 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
             `~matplotlib.image.AxesImage` object, or a
             `~matplotlib.lines.Line2D`.
         """
-        raise NotImplementedError("Please define this function.")
+        msg = "Please define this function."
+        raise NotImplementedError(msg)
 
     def _connect_fig_events(self):
         self.fig.canvas.mpl_connect("button_press_event", self._mouse_click)
@@ -307,13 +305,13 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
             vert = [ysize, pad_size] * self.num_sliders + [large_pad_size, large_pad_size, Size.AxesY(self.axes)]
         else:
             vert = [ysize, large_pad_size] * self.num_sliders + [large_pad_size, Size.AxesY(self.axes)]
-            horiz = (
-                [Size.Fraction(0.1, Size.AxesX(self.axes))]
-                + [Size.Fraction(0.05, Size.AxesX(self.axes))]
-                + [Size.Fraction(0.65, Size.AxesX(self.axes))]
-                + [Size.Fraction(0.1, Size.AxesX(self.axes))]
-                + [Size.Fraction(0.1, Size.AxesX(self.axes))]
-            )
+            horiz = [
+                Size.Fraction(0.1, Size.AxesX(self.axes)),
+                Size.Fraction(0.05, Size.AxesX(self.axes)),
+                Size.Fraction(0.65, Size.AxesX(self.axes)),
+                Size.Fraction(0.1, Size.AxesX(self.axes)),
+                Size.Fraction(0.1, Size.AxesX(self.axes)),
+            ]
 
         self.divider.set_horizontal(horiz)
         self.divider.set_vertical(vert)
@@ -348,10 +346,7 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         for i in range(self.num_sliders):
             y = i * 2
             self.sliders.append(self.fig.add_axes((0.0, 0.0, 0.01 + i / 10.0, 1.0)))
-            if self.num_buttons == 0:
-                nx1 = 3
-            else:
-                nx1 = -2
+            nx1 = 3 if self.num_buttons == 0 else -2
             locator = self.divider.new_locator(nx=2, ny=y, nx1=nx1)
             self.sliders[-1].set_axes_locator(locator)
             self.sliders[-1].text(
@@ -466,7 +461,9 @@ class ArrayAnimator(BaseFuncAnimator, metaclass=abc.ABCMeta):
     Extra keywords are passed to `~sunpy.visualization.animator.BaseFuncAnimator`.
     """
 
-    def __init__(self, data, image_axes=[-2, -1], axis_ranges=None, **kwargs):
+    def __init__(self, data, image_axes=None, axis_ranges=None, **kwargs):
+        if image_axes is None:
+            image_axes = [-2, -1]
         all_axes = list(range(self.naxis))
         # Handle negative indexes
         self.image_axes = [all_axes[i] for i in image_axes]
@@ -476,14 +473,16 @@ class ArrayAnimator(BaseFuncAnimator, metaclass=abc.ABCMeta):
             slider_axes.remove(x)
 
         if len(slider_axes) != self.num_sliders:
-            raise ValueError("Number of sliders doesn't match the number of slider axes.")
+            msg = "Number of sliders doesn't match the number of slider axes."
+            raise ValueError(msg)
         self.slider_axes = slider_axes
 
         # Verify that combined slider_axes and image_axes make all axes
         ax = self.slider_axes + self.image_axes
         ax.sort()
         if ax != list(range(self.naxis)):
-            raise ValueError("Number of image and slider axes do not match total number of axes.")
+            msg = "Number of image and slider axes do not match total number of axes."
+            raise ValueError(msg)
 
         self.axis_ranges, self.extent = self._sanitize_axis_ranges(axis_ranges, data.shape)
 
@@ -499,7 +498,7 @@ class ArrayAnimator(BaseFuncAnimator, metaclass=abc.ABCMeta):
             "slider_ranges": [[0, dim] for dim in np.array(data.shape)[self.slider_axes]] + slider_ranges,
         }
         self.num_sliders = len(base_kwargs["slider_functions"])
-        base_kwargs.update(kwargs)
+        base_kwargs |= kwargs
         super().__init__(data, **base_kwargs)
 
     @property
@@ -552,7 +551,8 @@ class ArrayAnimator(BaseFuncAnimator, metaclass=abc.ABCMeta):
 
         # need the same number of axis ranges as axes
         if len(axis_ranges) != ndim:
-            raise ValueError("Length of axis_ranges must equal number of axes")
+            msg = "Length of axis_ranges must equal number of axes"
+            raise ValueError(msg)
 
         # Define error message for incompatible axis_range input.
         def incompatible_axis_ranges_error_message(j):

@@ -85,15 +85,15 @@ def wcs_3d():
 
 
 @pytest.mark.parametrize(
-    "data, slices, dim",
-    (
+    ("data", "slices", "dim"),
+    [
         (np.arange(120).reshape((5, 4, 3, 2)), [0, 0, "x", "y"], 2),
         (np.arange(120).reshape((5, 4, 3, 2)), [0, "x", 0, "y"], 2),
         (np.arange(120).reshape((5, 4, 3, 2)), ["x", 0, 0, "y"], 2),
         (np.arange(120).reshape((5, 4, 3, 2)), ["y", 0, "x", 0], 2),
         (np.arange(120).reshape((5, 4, 3, 2)), ["x", "y", 0, 0], 2),
         (np.arange(120).reshape((5, 4, 3, 2)), [0, 0, 0, "x"], 1),
-    ),
+    ],
 )
 def test_construct_array_animator(wcs_4d, data, slices, dim):
     array_animator = ArrayAnimatorWCS(data, wcs_4d, slices)
@@ -105,11 +105,10 @@ def test_construct_array_animator(wcs_4d, data, slices, dim):
         if wslice not in ["x", "y"]:
             assert callable(arange)
             a = arange(0)
+            assert isinstance(a, u.Quantity)
             if "pos" in wcs_4d.world_axis_physical_types[i]:
-                assert isinstance(a, u.Quantity)
                 assert u.allclose(a, 0 * u.pix)
             else:
-                assert isinstance(a, u.Quantity)
                 assert a.value == wcs_4d.pixel_to_world_values(*[0] * wcs_4d.world_n_dim)[i]
                 assert a.unit == wcs_4d.world_axis_units[i]
         else:
@@ -118,7 +117,7 @@ def test_construct_array_animator(wcs_4d, data, slices, dim):
 
 def test_constructor_errors(wcs_4d):
     # WCS is not BaseLowLevelWCS
-    with pytest.raises(ValueError, match="provided that implements the astropy WCS API."):
+    with pytest.raises(TypeError, match="provided that implements the astropy WCS API."):
         ArrayAnimatorWCS(np.arange(25).reshape((5, 5)), {}, ["x", "y"])
 
     # Data has wrong number of dimensions

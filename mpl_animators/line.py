@@ -92,14 +92,16 @@ class LineAnimator(ArrayAnimator):
         # Check inputs.
         self.plot_axis_index = int(plot_axis_index)
         if self.plot_axis_index not in range(-data.ndim, data.ndim):
-            raise ValueError(
+            msg = (
                 "plot_axis_index must be within range of number of data dimensions" " (or equivalent negative indices)."
             )
+            raise ValueError(msg)
         if data.ndim < 2:
-            raise ValueError(
+            msg = (
                 "data must have at least two dimensions. One for data "
                 "for each single plot and at least one for time/iteration."
             )
+            raise ValueError(msg)
         # Define number of slider axes.
         self.naxis = data.ndim
         self.num_sliders = self.naxis - 1
@@ -108,17 +110,11 @@ class LineAnimator(ArrayAnimator):
             axis_ranges = None
         if axis_ranges is None or axis_ranges[self.plot_axis_index] is None:
             self.xdata = np.arange(data.shape[self.plot_axis_index])
-        # Else derive the xdata as pixel centers from the pixel edges supplied by
-        # the user in axis_ranges[plot_axis_index]
-        else:
-            # If the shape of the array is a 1D array, get the centers about axis=0
-            if np.asarray(axis_ranges[self.plot_axis_index]).ndim == 1:
-                self.xdata = edges_to_centers_nd(np.asarray(axis_ranges[self.plot_axis_index]), 0)
+        elif np.asarray(axis_ranges[self.plot_axis_index]).ndim == 1:
+            self.xdata = edges_to_centers_nd(np.asarray(axis_ranges[self.plot_axis_index]), 0)
 
-            # Else derive the xdata as pixel centers from the pixel edges supplied by
-            # the user in axis_ranges[plot_axis_index] along axis=plot_axis_index
-            else:
-                self.xdata = edges_to_centers_nd(np.asarray(axis_ranges[self.plot_axis_index]), plot_axis_index)
+        else:
+            self.xdata = edges_to_centers_nd(np.asarray(axis_ranges[self.plot_axis_index]), plot_axis_index)
         if ylim is None:
             ylim = (np.nanmin(data), np.nanmax(data))
         if xlim is None:
@@ -143,7 +139,7 @@ class LineAnimator(ArrayAnimator):
         if self.ylabel is not None:
             ax.set_ylabel(self.ylabel)
         plot_args = {}
-        plot_args.update(self.imshow_kwargs)
+        plot_args |= self.imshow_kwargs
         if self.xdata.shape == self.data.shape:
             item = [0] * self.data.ndim
             item[self.plot_axis_index] = slice(None)
@@ -165,10 +161,7 @@ class LineAnimator(ArrayAnimator):
             if self.xdata.shape == self.data.shape:
                 item = [int(slid._slider.val) for slid in self.sliders]
                 item[ax_ind] = val
-                if self.plot_axis_index < 0:
-                    i = self.data.ndim + self.plot_axis_index
-                else:
-                    i = self.plot_axis_index
+                i = self.data.ndim + self.plot_axis_index if self.plot_axis_index < 0 else self.plot_axis_index
                 item.insert(i, slice(None))
                 line.set_xdata(self.xdata[tuple(item)])
             slider.cval = val

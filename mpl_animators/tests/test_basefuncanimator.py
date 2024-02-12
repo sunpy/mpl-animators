@@ -26,11 +26,11 @@ def update_plotval(val, im, slider, data):
 
 
 def button_func1(*args, **kwargs):
-    print(*args, **kwargs)
+    print(*args, **kwargs)  # NOQA: T201
 
 
 @pytest.mark.parametrize(
-    "fig, colorbar, buttons", ((None, False, [[], []]), (mfigure.Figure(), True, [[button_func1], ["hi"]]))
+    ("fig", "colorbar", "buttons"), [(None, False, [[], []]), (mfigure.Figure(), True, [[button_func1], ["hi"]])]
 )
 def test_base_func_init(fig, colorbar, buttons):
     data = np.random.random((3, 10, 10))
@@ -163,7 +163,7 @@ axis_ranges1 = np.tile(np.linspace(0, 100, 21), (10, 1))
 
 
 @pytest.mark.parametrize(
-    "axis_ranges, exp_extent, exp_axis_ranges",
+    ("axis_ranges", "exp_extent", "exp_axis_ranges"),
     [
         ([None, None], [-0.5, 19.5], [np.arange(10), np.array([-0.5, 19.5])]),
         ([[0, 10], [0, 20]], [0, 20], [np.arange(0.5, 10.5), np.asarray([0, 20])]),
@@ -172,8 +172,9 @@ axis_ranges1 = np.tile(np.linspace(0, 100, 21), (10, 1))
     ],
 )
 def test_sanitize_axis_ranges(axis_ranges, exp_extent, exp_axis_ranges):
+    rng_gen = np.random.default_rng(1)
     data_shape = (10, 20)
-    data = np.random.rand(*data_shape)
+    data = rng_gen.random(data_shape)
     aanim = ArrayAnimatorTest(data=data)
     out_axis_ranges, out_extent = aanim._sanitize_axis_ranges(axis_ranges=axis_ranges, data_shape=data_shape)
     assert exp_extent == out_extent
@@ -186,7 +187,8 @@ XDATA = np.tile(np.linspace(0, 100, 11), (5, 5, 1))
 
 
 @pytest.mark.parametrize(
-    "plot_axis_index, axis_ranges, xlabel, xlim", [(-1, None, None, None), (-1, [None, None, XDATA], "x-axis", None)]
+    ("plot_axis_index", "axis_ranges", "xlabel", "xlim"),
+    [(-1, None, None, None), (-1, [None, None, XDATA], "x-axis", None)],
 )
 def test_lineanimator_init(plot_axis_index, axis_ranges, xlabel, xlim):
     data = np.random.random((5, 5, 10))
@@ -207,9 +209,9 @@ def test_lineanimator_init_nans():
 
 @figure_test
 def test_lineanimator_figure():
-    np.random.seed(1)
+    rng_gen = np.random.default_rng(1)
     data_shape0 = (10, 20)
-    data0 = np.random.rand(*data_shape0)
+    data0 = rng_gen.random(data_shape0)
     plot_axis0 = 1
     slider_axis0 = 0
     xdata = np.tile(np.linspace(0, 100, (data_shape0[plot_axis0] + 1)), (data_shape0[slider_axis0], 1))

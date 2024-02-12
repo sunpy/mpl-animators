@@ -39,10 +39,13 @@ class ImageAnimator(ArrayAnimator):
     Extra keywords are passed to `~sunpy.visualization.animator.ArrayAnimator`.
     """
 
-    def __init__(self, data, image_axes=[-2, -1], axis_ranges=None, **kwargs):
+    def __init__(self, data, image_axes=None, axis_ranges=None, **kwargs):
         # Check that number of axes is 2.
+        if image_axes is None:
+            image_axes = [-2, -1]
         if len(image_axes) != 2:
-            raise ValueError("There can only be two spatial axes")
+            msg = "There can only be two spatial axes"
+            raise ValueError(msg)
         # Define number of slider axes.
         self.naxis = data.ndim
         self.num_sliders = self.naxis - 2
@@ -60,16 +63,14 @@ class ImageAnimator(ArrayAnimator):
         # Create extent arg
         extent = []
         # reverse because numpy is in y-x and extent is x-y
-        if max([len(self.axis_ranges[i]) for i in self.image_axes[::-1]]) > 2:
+        if max(len(self.axis_ranges[i]) for i in self.image_axes[::-1]) > 2:
             self._non_regular_plot_axis = True
         for i in self.image_axes[::-1]:
             if self._non_regular_plot_axis is False and len(self.axis_ranges[i]) > 2:
                 self._non_regular_plot_axis = True
-            extent.append(self.axis_ranges[i][0])
-            extent.append(self.axis_ranges[i][-1])
-
+            extent.extend((self.axis_ranges[i][0], self.axis_ranges[i][-1]))
         imshow_args = {"interpolation": "nearest", "origin": "lower"}
-        imshow_args.update(self.imshow_kwargs)
+        imshow_args |= self.imshow_kwargs
 
         # If value along an axis is set with an array, generate a NonUniformImage
         if self._non_regular_plot_axis:
@@ -88,7 +89,7 @@ class ImageAnimator(ArrayAnimator):
             ax.set_ylim(self.extent[2], self.extent[3])
         else:
             # Else produce a more basic plot with regular axes.
-            imshow_args.update({"extent": extent})
+            imshow_args["extent"] = extent
             im = ax.imshow(self.data[self.frame_index], **imshow_args)
         if self.if_colorbar:
             self._add_colorbar(im)
