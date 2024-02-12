@@ -50,8 +50,10 @@ jobs:
     parameters:
       jobname:
         type: string
+      image:
+        type: string
     docker:
-      - image: cimg/python:3.11.6
+      - image: << parameters.image >>
     environment:
       TOXENV: << parameters.jobname >>
       # GIT_SSH_COMMAND: ssh -i ~/.ssh/id_rsa_81487513a647e1b6ec0b73b589be0ba5
@@ -82,37 +84,69 @@ jobs:
           git commit -m "Update reference figures from ${CIRCLE_BRANCH}" || echo "No changes to reference images to deploy"
           git push
 
+
+all-jobs: &all-jobs
+  - "py312-figure"
+  - "py311-figure-devdeps"
+  - "py310-figure"
+  - "py39-figure-oldestdeps"
+
+main-branch: &main-branch
+  branches:
+    only:
+      - main
+
 workflows:
   version: 2
 
   figure-tests:
+    # This is very verbose, but we can't use `matrix:` and specify the docker container per-job
+    # which massively slows down the build as we have to compile python.
     jobs:
       - figure:
-          name: "py311-figure"
-          jobname: "py311-figure"
-          image: "cimg/python:3.11"
+          name: "py312-figure"
+          jobname: "py312-figure"
+          image: "cimg/python:3.12"
+
       - figure:
           name: "py311-figure-devdeps"
           jobname: "py311-figure-devdeps"
           image: "cimg/python:3.11"
+
+      - figure:
+          name: "py310-figure"
+          jobname: "py310-figure"
+          image: "cimg/python:3.10"
+
       - figure:
           name: "py39-figure-oldestdeps"
           jobname: "py39-figure-oldestdeps"
           image: "cimg/python:3.9"
 
       - deploy-reference-images:
-          name: baseline-<< matrix.jobname >>
-          matrix:
-            parameters:
-              jobname:
-                - "py311-figure"
-                - "py311-figure-devdeps"
-                - "py39-figure-oldestdeps"
-          requires:
-            - "py311-figure"
-            - "py311-figure-devdeps"
-            - "py39-figure-oldestdeps"
-          filters:
-            branches:
-              only:
-                - main
+          name: "baseline-py312-figure"
+          jobname: "py312-figure"
+          image: "cimg/python:3.12"
+          requires: *all-jobs
+          filters: *main-branch
+
+      - deploy-reference-images:
+          name: "baseline-py311-figure-devdeps"
+          jobname: "py311-figure-devdeps"
+          image: "cimg/python:3.11"
+          requires: *all-jobs
+          filters: *main-branch
+
+      - deploy-reference-images:
+          name: "baseline-py310-figure"
+          jobname: "py310-figure"
+          image: "cimg/python:3.10"
+          requires: *all-jobs
+          filters: *main-branch
+
+      - deploy-reference-images:
+          name: "baseline-py39-figure-oldestdeps"
+          jobname: "py39-figure-oldestdeps"
+          image: "cimg/python:3.9"
+          requires: *all-jobs
+          filters: *main-branch
