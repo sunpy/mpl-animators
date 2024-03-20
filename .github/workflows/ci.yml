@@ -3,14 +3,14 @@ name: CI
 on:
   push:
     branches:
-      - 'main'
-      - '*.*'
-      - '!*backport*'
+      - "main"
+      - "*.*"
+      - "!*backport*"
     tags:
-      - 'v*'
-      - '!*dev*'
-      - '!*pre*'
-      - '!*post*'
+      - "v*"
+      - "!*dev*"
+      - "!*pre*"
+      - "!*post*"
   pull_request:
   # Allow manual runs through the web UI
   workflow_dispatch:
@@ -50,7 +50,7 @@ jobs:
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@main
     with:
       python-version: "3.10"
-      test_extras: 'all,tests'
+      test_extras: "all,tests"
       test_command: 'pytest -p no:warnings -m "not mpl_image_compare" --pyargs mpl_animators'
       submodules: false
     secrets:

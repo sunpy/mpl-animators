@@ -1,10 +1,79 @@
 [build-system]
-
-requires = ["setuptools",
-            "setuptools_scm",
-            "wheel"]
-
+requires = [
+  "setuptools",
+  "setuptools_scm[toml]",
+  "wheel",
+]
 build-backend = 'setuptools.build_meta'
+
+[project]
+name = "mpl_animators"
+dynamic = ["version"]
+description = "An interactive animation framework for matplotlib"
+readme = "README.rst"
+requires-python = ">=3.9"
+license = {file = "LICENSE.txt"}
+keywords = ["matplotlib", "animations", "mutli-dimensional", "interactive"]
+authors = [
+  {email = "sunpy@googlegroups.com"},
+  {name = "The SunPy Developers"}
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: BSD License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+  'matplotlib>=3.5.0',
+  'numpy>=1.21.0',
+]
+
+[project.urls]
+changelog = "https://github.com/sunpy/mpl-animators/releases"
+documentation = "https://docs.sunpy.org/projects/mpl-animators"
+issue_tracker = "https://github.com/sunpy/mpl-animators/issues"
+repository = "https://github.com/sunpy/mpl-animators"
+
+[project.optional-dependencies]
+all = ["mpl-animators"]
+tests = [
+  "mpl-animators[all]",
+  'pytest-astropy',
+  "pytest-mpl",
+]
+docs = [
+  "mpl-animators[all]",
+  'sphinx',
+  'sphinx-automodapi',
+  'sphinx-gallery',
+  'sunpy-sphinx-theme',
+  'sunpy[all]',
+]
+
+[tool.setuptools_scm]
+write_to = "mpl_animators/version.py"
+
+[tool.setuptools]
+include-package-data = true
+platforms = ["any"]
+provides = ["mpl_animators"]
+license-files = ["LICENSE.rst"]
+
+[tool.setuptools.packages.find]
+namespaces = false
+
+[tool.codespell]
+skip = "*.asdf,*.fits,*.fts,*.header,*.json,*.xsh,*cache*,*egg*,*extern*,.git,.idea,.tox,_build,*truncated,*.svg,.asv_env,.history"
+ignore-words-list = "sav,nd"
 
 [ tool.gilesbot ]
   [ tool.gilesbot.circleci_artifacts ]

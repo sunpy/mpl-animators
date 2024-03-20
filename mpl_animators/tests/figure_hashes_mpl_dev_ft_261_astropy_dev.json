@@ -1,5 +1,5 @@
 {
-  "mpl_animators.tests.test_basefuncanimator.test_lineanimator_figure": "6865a446680cb7088d71becd653e3c9e9e8e982d71956c95f690d52365bfe106",
+  "mpl_animators.tests.test_basefuncanimator.test_lineanimator_figure": "54c06fd1880b1dced26a04a9eef085cee85c6ca5f49e7592a37e2a5718e1ddde",
   "mpl_animators.tests.test_wcs.test_array_animator_wcs_2d_simple_plot": "1d0b9c13e72d288e09d1ab85fe3b4df38d6b349eae661c54cf32c18f0af451c6",
   "mpl_animators.tests.test_wcs.test_array_animator_wcs_2d_clip_interval": "a78d4ca84423abcde116efeef4631cdf36d98033c71ad038363a033857743776",
   "mpl_animators.tests.test_wcs.test_array_animator_wcs_2d_celestial_sliders": "14fc82e6778a7725092a691f210f05420e5669099fe8cb21260fd44336e57f8e",
