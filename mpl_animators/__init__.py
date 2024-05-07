@@ -5,3 +5,5 @@ from mpl_animators.line import *
 from mpl_animators.wcs import *
 
 from .version import __version__
+
+__all__ = ["ArrayAnimator", "BaseFuncAnimator", "LineAnimator", "ArrayAnimatorWCS", "ImageAnimator", "__version__"]

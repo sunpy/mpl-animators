@@ -6,12 +6,15 @@
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
+import datetime
+from pathlib import Path
 
 # -- Project information -----------------------------------------------------
 
-project = 'mpl-animators'
-copyright = '2021, The SunPy Developers'
-author = 'The SunPy Developers'
+project = "mpl-animators"
+author = "The SunPy Community"
+copyright = f"{datetime.datetime.now(datetime.timezone.utc).year}, {author}"  # NOQA: A001
+author = "The SunPy Developers"
 
 # The full version, including alpha/beta/rc tags
 from mpl_animators import __version__
@@ -34,6 +37,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.smart_resolver',
+    "sphinx_gallery.gen_gallery",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -77,8 +81,23 @@ intersphinx_mapping = {
 # -- Options for HTML output -------------------------------------------------
 
 from sunpy_sphinx_theme.conf import *  # NOQA
-
+from sunpy_sphinx_theme import PNG_ICON
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
+
+# -- Sphinx Gallery ------------------------------------------------------------
+sphinx_gallery_conf = {
+    "backreferences_dir": (Path("generated") / "modules").absolute(),
+    "filename_pattern": "^((?!skip_).)*$",
+    "examples_dirs": (Path("..") / "examples").absolute(),
+    "gallery_dirs": (Path("generated") / "gallery").absolute(),
+    "matplotlib_animations": True,
+    "default_thumb_file": PNG_ICON,  # NOQA
+    "abort_on_example_error": False,
+    "plot_gallery": "True",
+    "remove_config_comments": True,
+    "doc_module": ("mpl_animators"),
+    "only_warn_on_example_error": True,
+}

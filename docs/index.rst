@@ -11,4 +11,6 @@ Finally, there are two base classes: `.BaseFuncAnimator` which can be extended t
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   generated/gallery/index
+   api
