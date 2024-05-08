@@ -1,17 +1,8 @@
-# NOTE: First try _dev.scm_version if it exists and setuptools_scm is installed
-# This file is not included in wheels/tarballs, so otherwise it will
-# fall back on the generated _version module.
+# Note that we need to fall back to the hard-coded version if either
+# setuptools_scm can't be imported or setuptools_scm can't determine the
+# version, so we catch the generic 'Exception'.
 try:
-    try:
-        from ._dev.scm_version import version
-    except ImportError:
-        from ._version import version
+    from setuptools_scm import get_version
+    __version__ = get_version(root='..', relative_to=__file__)
 except Exception:
-    import warnings
-
-    warnings.warn(
-        f'could not determine {__name__.split(".")[0]} package version; this indicates a broken installation'
-    )
-    del warnings
-
-    version = '0.0.0'
+    __version__ = '0.1.dev409+g81013cb.d20240508'

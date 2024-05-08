@@ -14,7 +14,11 @@ license = { file = "licenses/LICENSE.rst", content-type = "text/plain" }
 authors = [
   { name = "The SunPy Developers", email = "sunpy@googlegroups.com" },
 ]
-dependencies = []
+dependencies = [
+  "matplotlib>=3.5.0",
+  "numpy>=1.21.0",
+  "astropy>=5.6.0"
+]
 dynamic = ["version"]
 
 [project.optional-dependencies]
@@ -23,10 +27,12 @@ tests = [
   "pytest-doctestplus",
   "pytest-cov",
   "pytest-xdist",
+  "pytest-mpl"
 ]
 docs = [
   "sphinx",
   "sphinx-automodapi",
+  "sphinx-sphinx-theme",
 ]
 [project.urls]
 repository = "https://docs.sunpy.org/projects/mpl-animators"
