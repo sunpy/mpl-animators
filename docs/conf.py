@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Configuration file for the Sphinx documentation builder.
 #
 # This file does only contain a selection of the most common options. For a
@@ -13,7 +15,7 @@ from mpl_animators import __version__
 
 release = __version__
 
-project = "mpl_animators"
+project = "mpl-animators"
 author = "The SunPy Developers"
 copyright = f"{datetime.datetime.now().year}, {author}"  # noqa: A001
 
@@ -57,7 +59,21 @@ default_role = 'py:obj'
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {"python": ("https://docs.python.org/", None)}
+intersphinx_mapping = {
+    "python": (
+        "https://docs.python.org/3/",
+        (None, "http://www.astropy.org/astropy-data/intersphinx/python3.inv"),
+    ),
+    "numpy": (
+        "https://numpy.org/doc/stable/",
+        (None, "http://www.astropy.org/astropy-data/intersphinx/numpy.inv"),
+    ),
+    "matplotlib": (
+        "https://matplotlib.org/",
+        (None, "http://www.astropy.org/astropy-data/intersphinx/matplotlib.inv"),
+    ),
+    "astropy": ("https://docs.astropy.org/en/stable/", None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -79,4 +95,17 @@ html_theme = "alabaster"
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
 autoclass_content = "both"
 
-# -- Other options ----------------------------------------------------------
+# -- Sphinx Gallery ------------------------------------------------------------
+sphinx_gallery_conf = {
+    "backreferences_dir": (Path("generated") / "modules").absolute(),
+    "filename_pattern": "^((?!skip_).)*$",
+    "examples_dirs": (Path("..") / "examples").absolute(),
+    "gallery_dirs": (Path("generated") / "gallery").absolute(),
+    "matplotlib_animations": True,
+    "default_thumb_file": PNG_ICON,  # NOQA
+    "abort_on_example_error": False,
+    "plot_gallery": "True",
+    "remove_config_comments": True,
+    "doc_module": ("mpl_animators"),
+    "only_warn_on_example_error": True,
+}
