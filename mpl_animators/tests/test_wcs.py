@@ -1,8 +1,9 @@
 from textwrap import dedent
 
-import astropy.units as u
 import numpy as np
 import pytest
+
+import astropy.units as u
 from astropy.io import fits
 from astropy.visualization.wcsaxes import WCSAxes
 from astropy.wcs import WCS
