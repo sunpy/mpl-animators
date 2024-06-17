@@ -16,7 +16,7 @@ authors = [
 ]
 dependencies = [
   "matplotlib>=3.5.0",
-  "numpy>=1.21.0",
+  "numpy>=1.23.0",
   "astropy>=5.6.0"
 ]
 dynamic = ["version"]
@@ -32,7 +32,7 @@ tests = [
 docs = [
   "sphinx",
   "sphinx-automodapi",
-  "sphinx-sphinx-theme",
+  "sunpy-sphinx-theme",
 ]
 [project.urls]
 repository = "https://docs.sunpy.org/projects/mpl-animators"
