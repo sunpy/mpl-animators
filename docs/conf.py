@@ -7,7 +7,7 @@
 # http://www.sphinx-doc.org/en/master/config
 
 import datetime
-
+from pathlib import Path
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
@@ -79,7 +79,7 @@ intersphinx_mapping = {
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = "alabaster"
+html_theme = "sunpy"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -96,6 +96,8 @@ html_theme = "alabaster"
 autoclass_content = "both"
 
 # -- Sphinx Gallery ------------------------------------------------------------
+from sunpy_sphinx_theme import PNG_ICON  #NOQA
+
 sphinx_gallery_conf = {
     "backreferences_dir": (Path("generated") / "modules").absolute(),
     "filename_pattern": "^((?!skip_).)*$",
