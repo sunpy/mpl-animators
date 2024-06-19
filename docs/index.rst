@@ -1,6 +1,5 @@
-***************************
-mpl-animators Documentation
-***************************
+Matplotlib Animators Documentation
+----------------------------------
 
 The ``mpl_animators`` package provides a set of classes which allow the easy construction of interactive `matplotlib` widget based animations.
 "Out of the box" classes are provided for making line or image plots from numpy arrays, with sliders to control the animation automatically added for all dimensions not on the axes of the plot.
@@ -13,10 +12,3 @@ Finally, there are two base classes: `.BaseFuncAnimator` which can be extended t
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
