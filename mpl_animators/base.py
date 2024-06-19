@@ -573,7 +573,7 @@ class ArrayAnimator(BaseFuncAnimator, metaclass=abc.ABCMeta):
                     # The reason that pixel edges are required as input rather than centers
                     # is so that the plot extent can be derived from axis_ranges (above)
                     # and APIs using both [min, max] pair and manual definition of each pixel
-                    # values can be unambiguously and simultanously supported.
+                    # values can be unambiguously and simultaneously supported.
                     extent += [axis_ranges[i][0], axis_ranges[i][-1]]
                     axis_ranges[i] = edges_to_centers_nd(axis_ranges[i], 0)
                 elif axis_ranges[i].ndim == ndim and axis_ranges[i].shape[i] == data_shape[i]+1:
