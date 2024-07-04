@@ -1,12 +1,12 @@
 from functools import partial
 
-import astropy.units as u
 import numpy as np
+
+import astropy.units as u
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.wcs.wcsapi import BaseLowLevelWCS
 
 from mpl_animators.extern import modest_image
-
 from .base import ArrayAnimator
 
 __all__ = ['ArrayAnimatorWCS']
@@ -111,7 +111,7 @@ class ArrayAnimatorWCS(ArrayAnimator):
         Read first the axes names property of the wcs and fall back to physical types.
         """
         # Return the name if it is set, or the physical type if it is not.
-        return [l or t for l, t in zip(self.wcs.world_axis_names, self.wcs.world_axis_physical_types)]
+        return [l or t for l, t in zip(self.wcs.world_axis_names, self.wcs.world_axis_physical_types)]  # NOQA: E741
 
     def _compute_slider_labels_from_wcs(self, slices):
         """

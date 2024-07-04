@@ -6,11 +6,13 @@ Creating a visualization with ArrayAnimatorWCS
 This example shows how to create a simple visualization using
 `~mpl_animators.ArrayAnimatorWCS`.
 """
+import matplotlib.pyplot as plt
+
 import astropy.units as u
 import astropy.wcs
-import matplotlib.pyplot as plt
-import sunpy.map
 from astropy.visualization import AsinhStretch, ImageNormalize
+
+import sunpy.map
 from sunpy.data.sample import AIA_171_IMAGE, AIA_193_IMAGE
 from sunpy.time import parse_time
 
