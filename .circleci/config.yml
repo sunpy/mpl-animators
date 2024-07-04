@@ -128,7 +128,7 @@ workflows:
       - deploy-reference-images:
           name: "baseline-py312-figure-devdeps"
           jobname: "py312-figure-devdeps"
-          image: "cimg/python:3.11"
+          image: "cimg/python:3.12"
           requires: *all-jobs
           filters: *main-branch
 
