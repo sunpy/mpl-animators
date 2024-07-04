@@ -35,6 +35,7 @@ docs = [
   "sphinx_gallery",
   "sphinx-automodapi",
   "sunpy-sphinx-theme",
+  "sunpy",
 ]
 
 [project.urls]
