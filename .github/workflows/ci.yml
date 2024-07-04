@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
       - run: python -m pip install -U --user build
       - run: python -m build . --sdist
       - run: python -m pip install -U --user twine
@@ -49,7 +49,7 @@ jobs:
     needs: [core]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
     with:
-      default_python: '3.10'
+      default_python: '3.12'
       submodules: false
       pytest: false
       toxdeps: tox-pypi-filter
@@ -60,10 +60,10 @@ jobs:
         - linux: build_docs
 
   publish_pure:
-      needs: [core, docs]
+      needs: [core, sdist_verify, docs]
       uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@main
       with:
-        python-version: '3.10'
+        python-version: '3.12'
         test_extras: 'tests'
         test_command: 'pytest -p no:warnings --doctest-rst --pyargs mpl_animators'
         submodules: false
