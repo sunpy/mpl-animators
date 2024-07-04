@@ -1,4 +1,3 @@
-
 name: CI
 
 on:
@@ -60,6 +59,18 @@ jobs:
         - linux: build_docs
 
   publish_pure:
+      # Build wheels when pushing to any branch except main
+      # Will only publish if tagged ^v.*
+      if: |
+        (
+          github.event_name != 'pull_request' && (
+            github.ref_name != 'main' ||
+            github.event_name == 'workflow_dispatch'
+          )
+        ) || (
+          github.event_name == 'pull_request' &&
+          contains(github.event.pull_request.labels.*.name, 'Run publish')
+        )
       needs: [core, sdist_verify, docs]
       uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@main
       with:
