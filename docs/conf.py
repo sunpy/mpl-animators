@@ -35,6 +35,7 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx_automodapi.automodapi",
     "sphinx_automodapi.smart_resolver",
+    "sphinx_gallery.gen_gallery",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -95,7 +96,7 @@ html_theme = "sunpy"
 autoclass_content = "both"
 
 # -- Sphinx Gallery ------------------------------------------------------------
-from sunpy_sphinx_theme import PNG_ICON  #NOQA
+from sunpy_sphinx_theme import PNG_ICON
 
 sphinx_gallery_conf = {
     "backreferences_dir": (Path("generated") / "modules").absolute(),
@@ -103,7 +104,7 @@ sphinx_gallery_conf = {
     "examples_dirs": (Path("..") / "examples").absolute(),
     "gallery_dirs": (Path("generated") / "gallery").absolute(),
     "matplotlib_animations": True,
-    "default_thumb_file": PNG_ICON,  # NOQA
+    "default_thumb_file": PNG_ICON,
     "abort_on_example_error": False,
     "plot_gallery": "True",
     "remove_config_comments": True,
