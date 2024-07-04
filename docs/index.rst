@@ -10,7 +10,6 @@ As well as this there is a specialized `.ArrayAnimatorWCS` class which can make 
 
 Finally, there are two base classes: `.BaseFuncAnimator` which can be extended to generate an interactive visualization from any data structure and set of functions to update the plot, and `.ArrayAnimator` which can be extended to generate any visualization based on the axes of a numpy array.
 
-
 .. toctree::
    :hidden:
 
