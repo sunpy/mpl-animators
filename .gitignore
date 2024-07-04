@@ -29,8 +29,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-mpl_animators/_version.py
-mpl_animators/version.py
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -242,6 +241,7 @@ $RECYCLE.BIN/
 *.lnk
 
 ### Extra Python Items and SunPy Specific
+mpl_animators/_version.py
 docs/whatsnew/latest_changelog.txt
 examples/**/*.csv
 figure_test_images*

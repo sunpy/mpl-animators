@@ -29,7 +29,7 @@ def button_func1(*args, **kwargs):
     print(*args, **kwargs)
 
 
-@pytest.mark.parametrize('fig, colorbar, buttons',
+@pytest.mark.parametrize(('fig', 'colorbar', 'buttons'),
                          ((None, False, [[], []]),
                           (mfigure.Figure(), True, [[button_func1], ["hi"]])))
 def test_base_func_init(fig, colorbar, buttons):
@@ -162,7 +162,7 @@ class ArrayAnimatorTest(ArrayAnimator):
 axis_ranges1 = np.tile(np.linspace(0, 100, 21), (10, 1))
 
 
-@pytest.mark.parametrize('axis_ranges, exp_extent, exp_axis_ranges',
+@pytest.mark.parametrize(('axis_ranges', 'exp_extent', 'exp_axis_ranges'),
                          [([None, None], [-0.5, 19.5],
                            [np.arange(10), np.array([-0.5, 19.5])]),
 
@@ -189,7 +189,7 @@ def test_sanitize_axis_ranges(axis_ranges, exp_extent, exp_axis_ranges):
 XDATA = np.tile(np.linspace(0, 100, 11), (5, 5, 1))
 
 
-@pytest.mark.parametrize('plot_axis_index, axis_ranges, xlabel, xlim',
+@pytest.mark.parametrize(('plot_axis_index', 'axis_ranges', 'xlabel', 'xlim'),
                          [(-1, None, None, None),
                           (-1, [None, None, XDATA], 'x-axis', None)])
 def test_lineanimator_init(plot_axis_index, axis_ranges, xlabel, xlim):
