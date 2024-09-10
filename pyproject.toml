@@ -52,6 +52,7 @@ zip-safe = false
 include-package-data = true
 
 [tool.setuptools.packages.find]
+include = ["mpl_animators*"]
 exclude = ["mpl_animators._dev*"]
 
 [tool.setuptools_scm]
