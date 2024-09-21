@@ -179,7 +179,11 @@ class ArrayAnimatorWCS(ArrayAnimator):
 
             axislabel = params.get("axislabel", None)
             if axislabel:
-                coord.set_axislabel(axislabel)
+                if isinstance(axislabel, dict):
+                   coord.set_axislabel(axislabel)
+                else:
+        # Default behavior for a string label
+                   coord.set_axislabel(axislabel)
 
             grid = params.get("grid", None)
             if grid is not None:
