@@ -6,13 +6,10 @@
 # http://www.sphinx-doc.org/en/master/config
 
 import datetime
-<<<<<<<
 from pathlib import Path
-=======
 
 from packaging.version import Version
 
->>>>>>>
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
@@ -110,6 +107,7 @@ html_theme = "sunpy"
 autoclass_content = "both"
 
 # -- Sphinx Gallery ------------------------------------------------------------
+
 from sunpy_sphinx_theme import PNG_ICON
 
 sphinx_gallery_conf = {
