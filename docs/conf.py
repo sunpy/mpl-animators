@@ -7,12 +7,23 @@
 
 import datetime
 from pathlib import Path
+
+from packaging.version import Version
+
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
 from mpl_animators import __version__
 
-release = __version__
+_version = Version(__version__)
+version = release = str(_version)
+# Avoid "post" appearing in version string in rendered docs
+if _version.is_postrelease:
+    version = release = _version.base_version
+# Avoid long githashes in rendered Sphinx docs
+elif _version.is_devrelease:
+    version = release = f'{_version.base_version}.dev{_version.dev}'
+is_development = _version.is_devrelease
 
 project = "mpl-animators"
 author = "The SunPy Developers"
@@ -96,6 +107,7 @@ html_theme = "sunpy"
 autoclass_content = "both"
 
 # -- Sphinx Gallery ------------------------------------------------------------
+
 from sunpy_sphinx_theme import PNG_ICON
 
 sphinx_gallery_conf = {
