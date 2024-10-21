@@ -119,7 +119,9 @@ graphviz_dot_args = [
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
 autoclass_content = "both"
 
-# -- Sphinx Gallery ------------------------------------------------------------
+# -- Other options ----------------------------------------------------------
+
+# -- Sphinx Gallery ---------------------------------------------------------
 
 from sunpy_sphinx_theme import PNG_ICON
 
