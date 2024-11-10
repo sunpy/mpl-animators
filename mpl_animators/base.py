@@ -90,18 +90,6 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         self.button_labels = button_labels or []
         self.num_buttons = len(self.button_func)
 
-        if not fig:
-            fig = plt.figure(layout="constrained")
-        self.parent_fig = fig
-        self.subfigs = None
-        self._setup_subfigure_grid()
-        self.fig = self.subfigs[0]
-
-        self.data = data
-        self.interval = interval
-        self.if_colorbar = colorbar
-        self.imshow_kwargs = kwargs
-
         if len(slider_functions) != len(slider_ranges):
             raise ValueError("slider_functions and slider_ranges must be the same length.")
 
@@ -113,6 +101,18 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         self.slider_functions = slider_functions
         self.slider_ranges = slider_ranges
         self.slider_labels = slider_labels or [''] * len(slider_functions)
+
+        if not fig:
+            fig = plt.figure(layout="constrained")
+        self.parent_fig = fig
+        self.subfigs = None
+        self._setup_subfigure_grid()
+        self.fig = self.subfigs[0]
+
+        self.data = data
+        self.interval = interval
+        self.if_colorbar = colorbar
+        self.imshow_kwargs = kwargs
 
         # Set active slider
         self.active_slider = 0
@@ -130,8 +130,8 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         #
         # Only do this if figure has a manager, so directly constructed figures
         # (ie. via matplotlib.figure.Figure()) work.
-        if hasattr(self.fig.canvas, "manager") and self.fig.canvas.manager is not None:
-            plt.sca(self.axes)
+        # if isinstance(self.axes, mpl.axes.Axes) and hasattr(self.fig.canvas, "manager") and self.fig.canvas.manager is not None:
+        #     plt.sca(self.axes)
 
         # Do Plot
         self.im = self.plot_start_image(self.axes)
@@ -325,6 +325,7 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
             sframe.cval = sframe.val
             saxis._slider = sframe
 
+            # Add the label as text in the middle of the axis
             saxis.text(
                 0.5,
                 0.5,
