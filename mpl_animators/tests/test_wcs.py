@@ -131,14 +131,14 @@ def test_constructor_errors(wcs_4d):
 def test_array_animator_wcs_2d_simple_plot(wcs_4d):
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'x', 'y'])
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
 def test_array_animator_wcs_2d_clip_interval(wcs_4d):
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'x', 'y'], clip_interval=(1, 99)*u.percent)
-    return a.fig
+    return a.parent_fig
 
 
 def test_array_animator_wcs_2d_clip_interval_change(wcs_4d):
@@ -158,7 +158,7 @@ def test_array_animator_wcs_2d_clip_interval_change(wcs_4d):
 def test_array_animator_wcs_2d_celestial_sliders(wcs_4d):
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, ['x', 'y', 0, 0])
-    return a.fig
+    return a.parent_fig
 
 
 def test_to_axes(wcs_4d):
@@ -172,7 +172,7 @@ def test_array_animator_wcs_2d_update_plot(wcs_4d):
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'x', 'y'])
     a.update_plot(1, a.im, a.sliders[0]._slider)
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -180,7 +180,7 @@ def test_array_animator_wcs_2d_transpose_update_plot(wcs_4d):
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'y', 'x'], colorbar=True)
     a.update_plot(1, a.im, a.sliders[0]._slider)
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -191,7 +191,7 @@ def test_array_animator_wcs_2d_colorbar_buttons(wcs_4d):
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'y', 'x'],
                          colorbar=True, button_func=bf, button_labels=bl)
     a.update_plot(1, a.im, a.sliders[0]._slider)
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -200,7 +200,7 @@ def test_array_animator_wcs_2d_colorbar_buttons_default_labels(wcs_4d):
     bf = [lambda x: x] * 10
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'y', 'x'], colorbar=True, button_func=bf)
     a.update_plot(1, a.im, a.sliders[0]._slider)
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -216,7 +216,7 @@ def test_array_animator_wcs_2d_extra_sliders(wcs_4d):
                          slider_functions=[vmin_slider, vmax_slider],
                          slider_ranges=[[0, 100], [0, 100]])
     a.update_plot(1, a.im, a.sliders[0]._slider)
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -224,7 +224,7 @@ def test_array_animator_wcs_1d_update_plot(wcs_4d):
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'x', 0], ylabel="Y axis!")
     a.sliders[0]._slider.set_val(1)
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -244,7 +244,7 @@ def test_array_animator_wcs_1d_update_plot_masked(wcs_3d):
     a = ArrayAnimatorWCS(data, wcs_3d, ['x', 0, 0], ylabel="Y axis!")
     a.sliders[0]._slider.set_val(wcs_3d.array_shape[0] / 2)
 
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -261,7 +261,7 @@ def test_array_animator_wcs_coord_params(wcs_4d):
 
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'x', 'y'], coord_params=coord_params)
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -278,7 +278,7 @@ def test_array_animator_wcs_coord_params_no_ticks(wcs_4d):
 
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'x', 'y'], coord_params=coord_params)
-    return a.fig
+    return a.parent_fig
 
 
 @figure_test
@@ -295,4 +295,4 @@ def test_array_animator_wcs_coord_params_grid(wcs_4d):
 
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, [0, 0, 'x', 'y'], coord_params=coord_params)
-    return a.fig
+    return a.parent_fig
