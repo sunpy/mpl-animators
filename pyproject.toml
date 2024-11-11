@@ -36,7 +36,6 @@ docs = [
   "sunpy-sphinx-theme",
   "packaging",
   "sphinx_gallery",
-  "sunpy-sphinx-theme",
   "sunpy",
   "scipy",
 ]
