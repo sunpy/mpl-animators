@@ -80,14 +80,14 @@ def wcs_3d():
     return WCS(header=fits.Header.fromstring(header, sep='\n'))
 
 
-@pytest.mark.parametrize(('data', 'slices', 'dim'), (
+@pytest.mark.parametrize(('data', 'slices', 'dim'), [
     (np.arange(120).reshape((5, 4, 3, 2)), [0, 0, 'x', 'y'], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), [0, 'x', 0, 'y'], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), ['x', 0, 0, 'y'], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), ['y', 0, 'x', 0], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), ['x', 'y', 0, 0], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), [0, 0, 0, 'x'], 1),
-))
+])
 def test_construct_array_animator(wcs_4d, data, slices, dim):
     array_animator = ArrayAnimatorWCS(data, wcs_4d, slices)
 
