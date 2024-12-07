@@ -6,14 +6,7 @@ The ``mpl_animators`` package provides a set of classes which allow the easy con
 
 "Out of the box" classes are provided for making line or image plots from numpy arrays, with sliders to control the animation automatically added for all dimensions not on the axes of the plot.
 
-<<<<<<<
 As well as this there is a specialized `.ArrayAnimatorWCS` class which can make line or image plots for a numpy array and associated World Coordinate System (WCS) object from `astropy`.
-=======
-   whatsnew/index
-
-Indices and tables
-==================
->>>>>>>
 
 Finally, there are two base classes: `.BaseFuncAnimator` which can be extended to generate an interactive visualization from any data structure and set of functions to update the plot, and `.ArrayAnimator` which can be extended to generate any visualization based on the axes of a numpy array.
 
@@ -22,3 +15,4 @@ Finally, there are two base classes: `.BaseFuncAnimator` which can be extended t
 
    generated/gallery/index
    api
+   whatsnew/index
