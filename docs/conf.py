@@ -47,6 +47,7 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx_automodapi.automodapi",
     "sphinx_automodapi.smart_resolver",
+    "sphinx_changelog",
     "sphinx_gallery.gen_gallery",
 ]
 
