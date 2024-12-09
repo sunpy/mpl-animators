@@ -42,8 +42,9 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://docs.sunpy.org/projects/mpl-animators"
-"Source Code" = "https://github.com/sunpy/mpl-animators/"
+Homepage = "https://sunpy.org"
+"Source Code" = "https://github.com/sunpy/mpl-animators"
+Download = "https://pypi.org/project/mpl_animators"
 Documentation = "https://docs.sunpy.org/projects/mpl-animators"
 Changelog = "https://github.com/sunpy/mpl-animators/releases"
 "Issue Tracker" = "https://github.com/sunpy/mpl-animators/issues"
