@@ -8,6 +8,7 @@ from astropy.wcs.wcsapi import BaseLowLevelWCS
 
 from mpl_animators.extern import modest_image
 from .base import ArrayAnimator
+import warnings
 
 __all__ = ['ArrayAnimatorWCS']
 
@@ -277,8 +278,11 @@ class ArrayAnimatorWCS(ArrayAnimator):
 
         # If we are not setting ylim globally then we set it per frame.
         if self.ylim == 'dynamic':
-            self.axes.set_ylim(float(self.data[self.frame_index].min()),
-                               float(self.data[self.frame_index].max()))
+            try:
+                self.axes.set_ylim(float(self.data[self.frame_index].min()),
+                                   float(self.data[self.frame_index].max()))
+            except ValueError:
+                warnings.warn(UserWarning(f"No data found for data slice {self.frame_index} - cannot set ylim"))
         slider.cval = val
 
     def plot_start_image_2d(self, ax):
