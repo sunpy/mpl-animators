@@ -278,8 +278,8 @@ class ArrayAnimatorWCS(ArrayAnimator):
 
         # If we are not setting ylim globally then we set it per frame.
         if self.ylim == 'dynamic':
-            vmin = float(self.data[self.frame_index].min()).compute()
-            vmax = float(self.data[self.frame_index].max()).compute()
+            vmin = float(np.nanmin(self.data[self.frame_index]))
+            vmax = float(np.nanmax(self.data[self.frame_index]))
             if np.isnan(vmin) or np.isnan(vmax):
                 warnings.warn(UserWarning(f"No data found for data slice {self.frame_index} - cannot set ylim"))
                 return
