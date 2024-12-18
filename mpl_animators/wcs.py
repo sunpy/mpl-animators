@@ -278,11 +278,13 @@ class ArrayAnimatorWCS(ArrayAnimator):
 
         # If we are not setting ylim globally then we set it per frame.
         if self.ylim == 'dynamic':
-            try:
-                self.axes.set_ylim(float(self.data[self.frame_index].min()),
-                                   float(self.data[self.frame_index].max()))
-            except ValueError:
+            vmin = float(self.data[self.frame_index].min()).compute()
+            vmax = float(self.data[self.frame_index].max()).compute()
+            if np.isnan(vmin) or np.isnan(vmax):
                 warnings.warn(UserWarning(f"No data found for data slice {self.frame_index} - cannot set ylim"))
+                return
+
+            self.axes.set_ylim(vmin, vmax)
         slider.cval = val
 
     def plot_start_image_2d(self, ax):
