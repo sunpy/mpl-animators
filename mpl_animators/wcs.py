@@ -321,11 +321,12 @@ class ArrayAnimatorWCS(ArrayAnimator):
         Get vmin, vmax of a data slice when clip_interval is specified.
         """
         percent_limits = self.clip_interval.to('%').value
-        try:
-            vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(self.data_transposed)
-        except IndexError:
+        if np.isnan(self.data_transposed).all().compute():
             warnings.warn(UserWarning(f"No data found for data slice {self.frame_index} - cannot set vmin, vmax"))
             vmin, vmax = 0, 0
+        else:
+            vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(self.data_transposed)
+
         return vmin, vmax
 
     def update_plot_2d(self, val, im, slider):
