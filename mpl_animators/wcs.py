@@ -278,11 +278,13 @@ class ArrayAnimatorWCS(ArrayAnimator):
 
         # If we are not setting ylim globally then we set it per frame.
         if self.ylim == 'dynamic':
-            try:
-                self.axes.set_ylim(float(self.data[self.frame_index].min()),
-                                   float(self.data[self.frame_index].max()))
-            except ValueError:
+            vmin = float(np.nanmin(self.data[self.frame_index]))
+            vmax = float(np.nanmax(self.data[self.frame_index]))
+            if np.isnan(vmin) or np.isnan(vmax):
                 warnings.warn(UserWarning(f"No data found for data slice {self.frame_index} - cannot set ylim"))
+                return
+
+            self.axes.set_ylim(vmin, vmax)
         slider.cval = val
 
     def plot_start_image_2d(self, ax):
@@ -319,11 +321,12 @@ class ArrayAnimatorWCS(ArrayAnimator):
         Get vmin, vmax of a data slice when clip_interval is specified.
         """
         percent_limits = self.clip_interval.to('%').value
-        try:
-            vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(self.data_transposed)
-        except IndexError:
+        if np.isnan(self.data_transposed).all():
             warnings.warn(UserWarning(f"No data found for data slice {self.frame_index} - cannot set vmin, vmax"))
             vmin, vmax = 0, 0
+        else:
+            vmin, vmax = AsymmetricPercentileInterval(*percent_limits).get_limits(self.data_transposed)
+
         return vmin, vmax
 
     def update_plot_2d(self, val, im, slider):
