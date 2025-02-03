@@ -1,7 +1,7 @@
 [build-system]
 requires = [
   "setuptools>=62.1",
-  "setuptools_scm[toml]>=6.2",
+  "setuptools_scm[toml]>=8.0.0",
   "wheel",
 ]
 build-backend = "setuptools.build_meta"
@@ -58,7 +58,7 @@ include = ["mpl_animators*"]
 exclude = ["mpl_animators._dev*"]
 
 [tool.setuptools_scm]
-write_to = "mpl_animators/_version.py"
+version_file = "mpl_animators/_version.py"
 
 [tool.gilesbot]
   [tool.gilesbot.pull_requests]
