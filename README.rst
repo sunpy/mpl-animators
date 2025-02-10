@@ -1,5 +1,5 @@
 An interactive animation framework for matplotlib
--------------------------------------------------
+=================================================
 
 This is for creating interactive animations with matplotlib.
 It is designed to handle N-dimensional data, and can be used to create animations.
@@ -13,6 +13,13 @@ Because this repo is heavily dependent on figure tests, most of the CI jobs
 (other than publish, and one windows and one macos build) run on Circle CI,
 there are no test runs on GH Actions. The `-figure` test tox jobs run all tests,
 figure and non-figure.
+
+Usage of Generative AI
+----------------------
+
+We expect authentic engagement in our community.
+Be wary of posting output from Large Language Models or similar generative AI as comments on GitHub or any other platform, as such comments tend to be formulaic and low quality content.
+If you use generative AI tools as an aid in developing code or documentation changes, ensure that you fully understand the proposed changes and can explain why they are the correct approach and an improvement to the current state.
 
 License
 -------
