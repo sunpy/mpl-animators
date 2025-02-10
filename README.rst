@@ -1,5 +1,5 @@
 An interactive animation framework for matplotlib
--------------------------------------------------
+=================================================
 
 This is for creating interactive animations with matplotlib.
 It is designed to handle N-dimensional data, and can be used to create animations.
@@ -15,7 +15,7 @@ there are no test runs on GH Actions. The `-figure` test tox jobs run all tests,
 figure and non-figure.
 
 Usage of Generative AI
-======================
+----------------------
 
 We expect authentic engagement in our community.
 Be wary of posting output from Large Language Models or similar generative AI as comments on GitHub or any other platform, as such comments tend to be formulaic and low quality content.
