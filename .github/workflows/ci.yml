@@ -37,11 +37,6 @@ jobs:
       envs: |
         - windows: py311
         - macos: py310
-<<<<<<<
-=======
-        - linux: py310-oldestdeps
-        - linux: py311-devdeps
->>>>>>>
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -82,15 +77,6 @@ jobs:
       )
     needs: [sdist_verify, docs]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v1
-<<<<<<<
-=======
-      envs: |
-        - linux: build_docs
-
-  publish:
-    # Build wheels on PRs only when labelled. Releases will only be published if tagged ^v.*
-    # see https://github-actions-workflows.openastronomy.org/en/latest/publish.html#upload-to-pypi
->>>>>>>
     with:
       python-version: '3.12'
       test_extras: 'tests'
