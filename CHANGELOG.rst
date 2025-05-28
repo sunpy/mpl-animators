@@ -1,9 +1,9 @@
-v1.2.1 - 2025-05-28
+v1.2.2 - 2025-05-28
 ===================
 
 Changed astropy pin from 5.6 to 5.3 as 5.6 is not a real release of astropy
 
-v1.2.0 - 2025-03-12
+v1.2.1 - 2025-03-12
 ===================
 
 Maintaince release, no changes otherwise
