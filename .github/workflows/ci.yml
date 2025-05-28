@@ -79,7 +79,7 @@ jobs:
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v1
     with:
       python-version: '3.13'
-      test_extras: 'tests'
+      test_extras: 'all,tests'
       test_command: 'pytest -p no:warnings --doctest-rst --pyargs mpl_animators'
       submodules: false
     secrets:
