@@ -87,7 +87,7 @@ jobs:
 
 all-jobs: &all-jobs
   - "py311-figure"
-  - "py312-figure-devdeps"
+  - "py313-figure-devdeps"
   - "py310-figure-oldestdeps"
 
 main-branch: &main-branch
@@ -109,9 +109,9 @@ workflows:
           image: "cimg/python:3.11"
 
       - figure:
-          name: "py312-figure-devdeps"
-          jobname: "py312-figure-devdeps"
-          image: "cimg/python:3.12"
+          name: "py313-figure-devdeps"
+          jobname: "py313-figure-devdeps"
+          image: "cimg/python:3.13"
 
       - figure:
           name: "py310-figure-oldestdeps"
@@ -126,9 +126,9 @@ workflows:
           filters: *main-branch
 
       - deploy-reference-images:
-          name: "baseline-py312-figure-devdeps"
-          jobname: "py312-figure-devdeps"
-          image: "cimg/python:3.12"
+          name: "baseline-py313-figure-devdeps"
+          jobname: "py313-figure-devdeps"
+          image: "cimg/python:3.13"
           requires: *all-jobs
           filters: *main-branch
 
