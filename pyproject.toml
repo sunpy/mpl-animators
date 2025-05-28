@@ -23,7 +23,7 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 wcs = [
-    "astropy>=5.3.4",
+    "astropy>=5.3.0",
 ]
 tests = [
   "pytest",
