@@ -1,7 +1,7 @@
 v1.2.2 - 2025-05-28
 ===================
 
-Changed astropy pin from 5.6 to 5.3 as 5.6 is not a real release of astropy
+Reverted astropy back to optional "wcs" group and changed the version from from 5.6.0 to 5.3.0 as 5.6 is not a real release of astropy
 
 v1.2.1 - 2025-03-12
 ===================
