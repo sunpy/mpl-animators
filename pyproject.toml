@@ -42,6 +42,12 @@ docs = [
   "sunpy",
   "scipy",
 ]
+all = [
+  "mpl_animators[wcs]",
+]
+dev = [
+  "mpl_animators[all,docs,tests]",
+]
 
 [project.urls]
 Homepage = "https://sunpy.org"
