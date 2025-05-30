@@ -99,10 +99,7 @@ class ArrayAnimatorWCS(ArrayAnimator):
         extra_slider_labels = []
         if "slider_functions" in kwargs and "slider_labels" not in kwargs:
             extra_slider_labels = [a.__name__ for a in kwargs['slider_functions']]
-        if "slider_labels" not in kwargs:
-            slider_labels = self._compute_slider_labels_from_wcs(slices)
-        else:
-            slider_labels = kwargs.pop('slider_labels')
+        slider_labels = kwargs.pop('slider_labels', self._compute_slider_labels_from_wcs(slices))
         slider_labels += extra_slider_labels
 
         super().__init__(data, image_axes=image_axes, axis_ranges=None,
