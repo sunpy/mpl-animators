@@ -167,6 +167,19 @@ def test_to_axes(wcs_4d):
     assert isinstance(a.axes, WCSAxes)
 
 
+def test_slider_labels(wcs_4d):
+    # Test that slider labels can be changed and default labels are set correctly
+    # Before the init did not allow this
+    data = np.arange(120).reshape((5, 4, 3, 2))
+    changed_labels = ArrayAnimatorWCS(data, wcs_4d, ['x', 'y', 0, 0], slider_labels=["One", "Two"])
+    default_labels = ArrayAnimatorWCS(data, wcs_4d, ['x', 'y', 0, 0])
+    assert changed_labels.slider_labels == ["One", "Two"]
+    assert default_labels.slider_labels == [
+        'custom:pos.helioprojective.lat / custom:pos.helioprojective.lon',
+        'custom:pos.helioprojective.lat / custom:pos.helioprojective.lon'
+    ]
+
+
 @figure_test
 def test_array_animator_wcs_2d_update_plot(wcs_4d):
     data = np.arange(120).reshape((5, 4, 3, 2))
