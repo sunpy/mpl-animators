@@ -1,3 +1,12 @@
+1.2.3 (2025-06-02)
+==================
+
+Bug Fixes
+---------
+
+- Allowed a user to override the slider labels for `.ArrayAnimatorWCS`. (`#93 <https://github.com/sunpy/mpl-animators/pull/93>`__)
+
+
 v1.2.2 - 2025-05-28
 ===================
 
