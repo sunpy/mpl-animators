@@ -12,7 +12,7 @@ v1.2.0 - 2024-07-23
 ===================
 
 Other Changes
-~~~~~~~~~~~~~
+-------------
 
 - remove old circleci webhook config by @Cadair in
   https://github.com/sunpy/mpl-animators/pull/36
@@ -40,7 +40,7 @@ Other Changes
   https://github.com/sunpy/mpl-animators/pull/53
 
 New Contributors
-~~~~~~~~~~~~~~~~
+----------------
 
 - @dstansby made their first contribution in
   https://github.com/sunpy/mpl-animators/pull/45
@@ -53,7 +53,7 @@ v1.1.2 - 2024-02-07
 ===================
 
 Other Changes
-~~~~~~~~~~~~~
+-------------
 
 -  remove old circleci webhook config by @Cadair in https://github.com/sunpy/mpl-animators/pull/36
 -  Added Gallery + Update Package template by @nabobalis in https://github.com/sunpy/mpl-animators/pull/37
@@ -62,7 +62,7 @@ v1.1.1 - 2023-11-17
 ===================
 
 Other Changes
-~~~~~~~~~~~~~
+-------------
 
 -  Update for tox4 by @ConorMacBride in https://github.com/sunpy/mpl-animators/pull/20
 -  Minor tweaks to CI - No actions by @nabobalis in https://github.com/sunpy/mpl-animators/pull/28
@@ -81,17 +81,17 @@ v1.1.0 - 2022-08-10
 ===================
 
 Bug Fixes
-~~~~~~~~~
+---------
 
 -  Fix setting y limits when data is a dask array by SolarDrew in https://github.com/sunpy/mpl-animators/pull/11
 
 Other Changes
-~~~~~~~~~~~~~
+-------------
 
 -  Add changelog config and bump minimum Python version to 3.8 by Cadair in https://github.com/sunpy/mpl-animators/pull/12
 
 New Contributors
-~~~~~~~~~~~~~~~~
+----------------
 
 -  @SolarDrew made their first contribution in https://github.com/sunpy/mpl-animators/pull/11
 
