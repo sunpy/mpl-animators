@@ -39,7 +39,7 @@ docs = [
   "sunpy-sphinx-theme",
   "packaging",
   "sphinx_gallery",
-  "sunpy",
+  "sunpy[map]",
   "scipy",
 ]
 all = [
