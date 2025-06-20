@@ -1,3 +1,4 @@
+import warnings
 from functools import partial
 
 import numpy as np
@@ -8,7 +9,6 @@ from astropy.wcs.wcsapi import BaseLowLevelWCS
 
 from mpl_animators.extern import modest_image
 from .base import ArrayAnimator
-import warnings
 
 __all__ = ['ArrayAnimatorWCS']
 
