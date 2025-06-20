@@ -18,11 +18,13 @@ authors = [
 dependencies = [
   "matplotlib>=3.5.0",
   "numpy>=1.23.0",
-  "astropy>=5.6.0",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
+wcs = [
+    "astropy>=5.3.0",
+]
 tests = [
   "pytest",
   "pytest-doctestplus",
@@ -39,6 +41,12 @@ docs = [
   "sphinx_gallery",
   "sunpy",
   "scipy",
+]
+all = [
+  "mpl_animators[wcs]",
+]
+dev = [
+  "mpl_animators[all,docs,tests]",
 ]
 
 [project.urls]
@@ -77,9 +85,9 @@ version_file = "mpl_animators/_version.py"
     message = "Click details to see the figure test comparisons for py310-figure-oldestdeps."
     report_on_fail = true
 
-  [ tool.gilesbot.circleci_artifacts.py312-figure-devdeps_report ]
-    url = ".tmp/py311-figure-devdeps/figure_test_images/fig_comparison.html"
-    message = "Click details to see the figure test comparisons for py312-figure-devdeps."
+  [ tool.gilesbot.circleci_artifacts.py313-figure-devdeps_report ]
+    url = ".tmp/py313-figure-devdeps/figure_test_images/fig_comparison.html"
+    message = "Click details to see the figure test comparisons for py313-figure-devdeps."
     report_on_fail = true
 
   [tool.gilesbot.towncrier_changelog]
