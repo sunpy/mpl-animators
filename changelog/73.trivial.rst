@@ -1,1 +1,0 @@
-Catch errors when animating plots with missing data and replace them with warnings.
