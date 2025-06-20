@@ -1,3 +1,12 @@
+1.2.4 (2025-06-20)
+==================
+
+Internal Changes
+----------------
+
+- Catch errors when animating plots with missing data and replace them with warnings. (`#73 <https://github.com/sunpy/mpl-animators/pull/73>`__)
+
+
 1.2.3 (2025-06-02)
 ==================
 
