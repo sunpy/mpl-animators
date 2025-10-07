@@ -16,8 +16,8 @@ authors = [
   { name = "The SunPy Developers", email = "sunpy@googlegroups.com" },
 ]
 dependencies = [
-  "matplotlib>=3.6.0",
-  "numpy>=1.25.0",
+  "matplotlib>=3.8.0",
+  "numpy>=1.26.0",
 ]
 dynamic = ["version"]
 
