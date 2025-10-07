@@ -86,9 +86,9 @@ jobs:
 
 
 all-jobs: &all-jobs
-  - "py311-figure"
+  - "py312-figure"
   - "py313-figure-devdeps"
-  - "py310-figure-oldestdeps"
+  - "py312-figure-oldestdeps"
 
 main-branch: &main-branch
   branches:
@@ -104,9 +104,9 @@ workflows:
     # IF YOU CHANGE THESE BUILDS UPDATE THE GILES CONFIG IN pyproject.toml
     jobs:
       - figure:
-          name: "py311-figure"
-          jobname: "py311-figure"
-          image: "cimg/python:3.11"
+          name: "py312-figure"
+          jobname: "py312-figure"
+          image: "cimg/python:3.12"
 
       - figure:
           name: "py313-figure-devdeps"
@@ -114,14 +114,14 @@ workflows:
           image: "cimg/python:3.13"
 
       - figure:
-          name: "py310-figure-oldestdeps"
-          jobname: "py310-figure-oldestdeps"
-          image: "cimg/python:3.10"
+          name: "py312-figure-oldestdeps"
+          jobname: "py312-figure-oldestdeps"
+          image: "cimg/python:3.12"
 
       - deploy-reference-images:
-          name: "baseline-py311-figure"
-          jobname: "py311-figure"
-          image: "cimg/python:3.11"
+          name: "baseline-py313-figure"
+          jobname: "py313-figure"
+          image: "cimg/python:3.13"
           requires: *all-jobs
           filters: *main-branch
 
@@ -133,8 +133,8 @@ workflows:
           filters: *main-branch
 
       - deploy-reference-images:
-          name: "baseline-py310-figure-oldestdeps"
-          jobname: "py310-figure-oldestdeps"
-          image: "cimg/python:3.10"
+          name: "baseline-py312-figure-oldestdeps"
+          jobname: "py312-figure-oldestdeps"
+          image: "cimg/python:3.12"
           requires: *all-jobs
           filters: *main-branch
