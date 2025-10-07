@@ -86,7 +86,7 @@ jobs:
 
 
 all-jobs: &all-jobs
-  - "py313-figure"
+  - "py312-figure"
   - "py313-figure-devdeps"
   - "py312-figure-oldestdeps"
 
