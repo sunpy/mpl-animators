@@ -44,11 +44,7 @@ jobs:
   sdist_verify:
     runs-on: ubuntu-latest
     steps:
-<<<<<<<
       - uses: actions/checkout@v5
-=======
-      - uses: actions/checkout@v4
->>>>>>>
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
@@ -69,15 +65,7 @@ jobs:
         apt:
           - graphviz
       envs: |
-<<<<<<<
         - linux: build_docs
-=======
-        - linux: py314
-        - windows: py312
-        - macos: py312
-        - linux: py312-oldestdeps
-        - linux: py314-devdeps
->>>>>>>
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -93,23 +81,8 @@ jobs:
     needs: [sdist_verify, docs]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v2
     with:
-<<<<<<<
-=======
-      default_python: '3.13'
-      submodules: false
-      pytest: false
-      toxdeps: tox-pypi-filter
->>>>>>>
       python-version: '3.13'
       test_extras: 'all,tests'
-<<<<<<<
-=======
-    needs: [test, docs]
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v2
-    with:
-      python-version: '3.13'
-      test_extras: 'tests'
->>>>>>>
       test_command: 'pytest -p no:warnings --doctest-rst --pyargs mpl_animators'
       submodules: false
     secrets:
