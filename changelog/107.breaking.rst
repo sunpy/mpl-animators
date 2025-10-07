@@ -1,0 +1,6 @@
+Increased to the follow minimum versions:
+
+- Python 3.12
+- NumPy 1.26.0
+- astropy 6.1.0
+- matplotlib 3.8.0
