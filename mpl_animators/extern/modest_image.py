@@ -4,7 +4,6 @@ set_extent.
 """
 # This file is copied from glue under the terms of the 3 Clause BSD licence. See licenses/GLUE.rst
 
-from __future__ import print_function, division
 
 import matplotlib
 rcParams = matplotlib.rcParams
@@ -42,7 +41,7 @@ class ModestImage(mi.AxesImage):
         self._pressed = False
         self._full_res = None
         self._full_extent = kwargs.get('extent', None)
-        super(ModestImage, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.invalidate_cache()
         self.axes.figure.canvas.mpl_connect('button_press_event', self._press)
         self.axes.figure.canvas.mpl_connect('button_release_event', self._release)
@@ -53,7 +52,7 @@ class ModestImage(mi.AxesImage):
         self._timer.add_callback(self._resize_paused)
 
     def remove(self):
-        super(ModestImage, self).remove()
+        super().remove()
         self._timer.stop()
         self._timer = None
 
@@ -113,7 +112,7 @@ class ModestImage(mi.AxesImage):
         if self._A is None or self._A.shape is None:
             return False
         else:
-            return super(ModestImage, self).contains(mouseevent)
+            return super().contains(mouseevent)
 
     def set_extent(self, extent):
         self._full_extent = extent
@@ -220,7 +219,7 @@ class ModestImage(mi.AxesImage):
         # in the array are masked.
         if hasattr(self._A, 'mask') and np.all(self._A.mask):
             return
-        super(ModestImage, self).draw(renderer, *args, **kwargs)
+        super().draw(renderer, *args, **kwargs)
 
 
 def main():
@@ -245,8 +244,7 @@ def main():
     plt.gcf().canvas.draw_idle()
     t1 = time()
 
-    print("Draw time for %s: %0.1f ms" % (artist.__class__.__name__,
-                                          (t1 - t0) * 1000))
+    print(f"Draw time for {artist.__class__.__name__}: {(t1 - t0) * 1000:0.1f} ms")
 
     plt.show()
 

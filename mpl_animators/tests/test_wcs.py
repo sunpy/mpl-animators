@@ -80,14 +80,14 @@ def wcs_3d():
     return WCS(header=fits.Header.fromstring(header, sep='\n'))
 
 
-@pytest.mark.parametrize(('data', 'slices', 'dim'), (
+@pytest.mark.parametrize(('data', 'slices', 'dim'), [
     (np.arange(120).reshape((5, 4, 3, 2)), [0, 0, 'x', 'y'], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), [0, 'x', 0, 'y'], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), ['x', 0, 0, 'y'], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), ['y', 0, 'x', 0], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), ['x', 'y', 0, 0], 2),
     (np.arange(120).reshape((5, 4, 3, 2)), [0, 0, 0, 'x'], 1),
-))
+])
 def test_construct_array_animator(wcs_4d, data, slices, dim):
     array_animator = ArrayAnimatorWCS(data, wcs_4d, slices)
 
@@ -165,6 +165,19 @@ def test_to_axes(wcs_4d):
     data = np.arange(120).reshape((5, 4, 3, 2))
     a = ArrayAnimatorWCS(data, wcs_4d, ['x', 'y', 0, 0])
     assert isinstance(a.axes, WCSAxes)
+
+
+def test_slider_labels(wcs_4d):
+    # Test that slider labels can be changed and default labels are set correctly
+    # Before the init did not allow this
+    data = np.arange(120).reshape((5, 4, 3, 2))
+    changed_labels = ArrayAnimatorWCS(data, wcs_4d, ['x', 'y', 0, 0], slider_labels=["One", "Two"])
+    default_labels = ArrayAnimatorWCS(data, wcs_4d, ['x', 'y', 0, 0])
+    assert changed_labels.slider_labels == ["One", "Two"]
+    assert default_labels.slider_labels == [
+        'custom:pos.helioprojective.lat / custom:pos.helioprojective.lon',
+        'custom:pos.helioprojective.lat / custom:pos.helioprojective.lon'
+    ]
 
 
 @figure_test

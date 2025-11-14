@@ -15,3 +15,4 @@ Finally, there are two base classes: `.BaseFuncAnimator` which can be extended t
 
    generated/gallery/index
    api
+   whatsnew/index

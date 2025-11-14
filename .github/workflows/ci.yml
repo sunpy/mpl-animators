@@ -1,3 +1,4 @@
+# Main CI Workflow
 name: CI
 
 on:
@@ -14,6 +15,13 @@ on:
   pull_request:
   # Allow manual runs through the web UI
   workflow_dispatch:
+  schedule:
+    #        ┌───────── minute (0 - 59)
+    #        │ ┌───────── hour (0 - 23)
+    #        │ │ ┌───────── day of the month (1 - 31)
+    #        │ │ │ ┌───────── month (1 - 12 or JAN-DEC)
+    #        │ │ │ │ ┌───────── day of the week (0 - 6 or SUN-SAT)
+    - cron: '0 7 * * 3'  # Every Wed at 07:00 UTC
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,34 +29,35 @@ concurrency:
 
 jobs:
   core:
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v2
     with:
       submodules: false
       coverage: codecov
       toxdeps: tox-pypi-filter
       envs: |
-        - windows: py311
-        - macos: py310
+        - windows: py313
+        - macos: py312
+        - linux: py313
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   sdist_verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.12'
+          python-version: '3.13'
       - run: python -m pip install -U --user build
       - run: python -m build . --sdist
       - run: python -m pip install -U --user twine
       - run: python -m twine check dist/*
 
   docs:
-    needs: [core]
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
+    needs: [core, sdist_verify]
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v2
     with:
-      default_python: '3.12'
+      default_python: '3.13'
       submodules: false
       pytest: false
       toxdeps: tox-pypi-filter
@@ -57,6 +66,8 @@ jobs:
           - graphviz
       envs: |
         - linux: build_docs
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   publish:
     # Build wheels on PRs only when labelled. Releases will only be published if tagged ^v.*
@@ -68,10 +79,10 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'Run publish')
       )
     needs: [sdist_verify, docs]
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@main
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v2
     with:
-      python-version: '3.12'
-      test_extras: 'tests'
+      python-version: '3.13'
+      test_extras: 'all,tests'
       test_command: 'pytest -p no:warnings --doctest-rst --pyargs mpl_animators'
       submodules: false
     secrets:

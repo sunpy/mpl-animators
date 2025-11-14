@@ -30,8 +30,8 @@ def button_func1(*args, **kwargs):
 
 
 @pytest.mark.parametrize(('fig', 'colorbar', 'buttons'),
-                         ((None, False, [[], []]),
-                          (mfigure.Figure(), True, [[button_func1], ["hi"]])))
+                         [(None, False, [[], []]),
+                          (mfigure.Figure(), True, [[button_func1], ["hi"]])])
 def test_base_func_init(fig, colorbar, buttons):
     data = np.random.random((3, 10, 10))
     func0 = partial(update_plotval, data=data)

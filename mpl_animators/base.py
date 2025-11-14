@@ -29,8 +29,9 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
     * 'bottom': change the active slider down one.
     * 'p': play/pause active slider.
 
-    This viewer can have user defined buttons added by specifying the labels
-    and functions called when those buttons are clicked as keyword arguments.
+    User-defined buttons can be added to the viewer by specifying the button labels
+    and functions called when those buttons are clicked.
+    See the descriptions of the ``button_labels`` and ``button_func`` keyword arguments.
 
     To make this class useful the subclass must implement ``_plot_start_image``
     which must define a ``self.im`` attribute which is an instance of
