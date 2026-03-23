@@ -1,4 +1,3 @@
-exclude: ".*(.csv|.fits|.fts|.fit|.header|.txt|tca.*|.json|.asdf)$|^CITATION.rst|tools\/|mpl_animators\/extern\/"
 repos:
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     rev: v1.23.1
@@ -17,12 +16,8 @@ repos:
     rev: 8.0.1
     hooks:
       - id: isort
-<<<<<<<
-        exclude: ".*(.fits|.fts|.fit|.header|.txt|tca.*|extern.*|{{ cookiecutter.module_name }}/extern)$"
-=======
         types: [python]
         exclude: *exclude_dirs
->>>>>>>
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
