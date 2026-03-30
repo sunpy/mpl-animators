@@ -1,8 +1,4 @@
-<<<<<<<
-``mpl-animators``
-=======
 ``mpl_animators``
->>>>>>>
 =================
 
 An interactive animation framework for matplotlib.
