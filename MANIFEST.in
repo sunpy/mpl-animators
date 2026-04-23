@@ -1,7 +1,5 @@
 # Exclude specific files
 # All files which are tracked by git and not explicitly excluded here are included by setuptools_scm
-<<<<<<<
-=======
 exclude .codecov.yaml
 exclude .coveragerc
 exclude .cruft.json
@@ -11,32 +9,15 @@ exclude .pre-commit-config.yaml
 exclude .readthedocs.yaml
 exclude .rtd-environment.yml
 exclude .ruff.toml
->>>>>>>
+exclude .editorconfig
+exclude .mailmap
 
 # Prune folders
 prune .github
 prune build
-<<<<<<<
-prune docs/_build
-prune docs/api
-=======
+prune .circleci
 prune changelog
 global-exclude *.pyc *.o
 # This subpackage is only used in development checkouts
 # and should not be included in built tarballs
 prune mpl_animators/_dev
->>>>>>>
-prune .circleci
-prune .github
-prune .jupyter
-prune binder
-prune mpl_animators/_dev
-
-# Exclude a bunch of common hidden files, you probably want to add your own here
-exclude .mailmap
-exclude .gitignore
-exclude .gitattributes
-exclude .editorconfig
-exclude .zenodo.json
-exclude *.yml
-exclude *.yaml
