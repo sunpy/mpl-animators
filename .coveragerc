@@ -4,6 +4,8 @@ omit =
   mpl_animators/*setup_package*
   mpl_animators/extern/*
   mpl_animators/version*
+  mpl_animators/_dev/*
+  */mpl_animators/_dev/*
   */mpl_animators/conftest.py
   */mpl_animators/*setup_package*
   */mpl_animators/extern/*
