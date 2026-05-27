@@ -12,6 +12,12 @@ from mpl_animators import ArrayAnimator, BaseFuncAnimator, LineAnimator, base
 from mpl_animators.tests.helpers import figure_test
 
 
+@pytest.fixture(autouse=True)
+def close_figures():
+    yield
+    plt.close('all')
+
+
 class FuncAnimatorTest(BaseFuncAnimator):
     def plot_start_image(self, ax):
         im = ax.imshow(self.data[0])
@@ -23,6 +29,12 @@ class FuncAnimatorTest(BaseFuncAnimator):
 def update_plotval(val, im, slider, data):
     i = int(val)
     im.set_array(data[i])
+
+
+def _func_animator(slider_range, nframes=3):
+    data = np.random.random((nframes, 10, 10))
+    funcs = [partial(update_plotval, data=data)]
+    return FuncAnimatorTest(data, funcs, [slider_range])
 
 
 def button_func1(*args, **kwargs):
@@ -96,6 +108,41 @@ def test_base_func_init(fig, colorbar, buttons):
     event.inaxes = tfa.sliders[0]
     tfa._mouse_click(event)
     assert tfa.active_slider == 0
+
+
+@pytest.mark.parametrize(('slider_range', 'valfmt'), [((0, 3), '%4.0f'), ((0.5, 3.5), '%4.1f')])
+def test_slider_valstep_pair(slider_range, valfmt):
+    tfa = _func_animator(slider_range)
+    s = tfa.sliders[0]._slider
+    assert s.valstep == 1
+    assert s.valfmt == valfmt
+    assert s.allowed_values is None
+
+
+@pytest.mark.parametrize('allowed', [np.array([0, 2, 5, 7]), np.array([0, 10])])
+def test_slider_valstep_array(allowed):
+    tfa = _func_animator(allowed)
+    s = tfa.sliders[0]._slider
+    assert np.array_equal(s.valstep, allowed)
+    assert np.array_equal(s.allowed_values, allowed)
+    assert s.valmin == allowed[0]
+    assert s.valmax == allowed[-1]
+
+
+def test_slider_step_previous_array():
+    allowed = np.array([0, 2, 5, 7])
+    tfa = _func_animator(allowed, nframes=8)
+    s = tfa.sliders[0]._slider
+
+    s.set_val(0)
+    for expected in [2, 5, 7, 0]:
+        tfa._step(s)
+        assert s.val == expected
+
+    s.set_val(7)
+    for expected in [5, 2, 0, 7]:
+        tfa._previous(s)
+        assert s.val == expected
 
 
 # Make sure figures created directly and through pyplot work

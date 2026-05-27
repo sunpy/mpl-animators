@@ -350,14 +350,24 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
                                   horizontalalignment="center",
                                   verticalalignment="center")
 
+            slider_range = self.slider_ranges[i]
+            rng = np.asarray(slider_range)
+            vfmt = '%4.0f' if np.issubdtype(rng.dtype, np.integer) else '%4.1f'
+            allowed_values = None if isinstance(slider_range, (list, tuple)) and rng.size == 2 else rng
+            if allowed_values is None:
+                vmin, vmax, vstep = rng[0], rng[-1]-1, 1
+            else:
+                vmin, vmax, vstep = rng[0], rng[-1], allowed_values
             sframe = widgets.Slider(self.sliders[-1], "",
-                                    self.slider_ranges[i][0],
-                                    self.slider_ranges[i][-1]-1,
-                                    valinit=self.slider_ranges[i][0],
-                                    valfmt='%4.1f')
+                                    vmin,
+                                    vmax,
+                                    valinit=vmin,
+                                    valstep=vstep,
+                                    valfmt=vfmt)
             sframe.on_changed(partial(self._slider_changed, slider=sframe))
             sframe.slider_ind = i
             sframe.cval = sframe.val
+            sframe.allowed_values = allowed_values
             self.sliders[-1]._slider = sframe
 
             self.slider_buttons.append(
@@ -404,6 +414,9 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         s = slider
         if s.val >= s.valmax:
             s.set_val(s.valmin)
+        elif s.allowed_values is not None:
+            idx = int(np.searchsorted(s.allowed_values, s.val, side='right'))
+            s.set_val(s.allowed_values[min(idx, len(s.allowed_values)-1)])
         else:
             s.set_val(s.val+1)
         self.fig.canvas.draw()
@@ -412,6 +425,9 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         s = slider
         if s.val <= s.valmin:
             s.set_val(s.valmax)
+        elif s.allowed_values is not None:
+            idx = int(np.searchsorted(s.allowed_values, s.val, side='left')) - 1
+            s.set_val(s.allowed_values[max(idx, 0)])
         else:
             s.set_val(s.val-1)
         self.fig.canvas.draw()
