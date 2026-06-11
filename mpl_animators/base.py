@@ -257,12 +257,12 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
     def _highlight_slider(self, ind):
         ax = self.sliders[ind]
         [a.set_linewidth(2.0) for n, a in ax.spines.items()]
-        self.fig.canvas.draw()
+        self.fig.canvas.draw_idle()
 
     def _dehighlight_slider(self, ind):
         ax = self.sliders[ind]
         [a.set_linewidth(1.0) for n, a in ax.spines.items()]
-        self.fig.canvas.draw()
+        self.fig.canvas.draw_idle()
 
 # =============================================================================
 #   Build the figure and place the widgets
