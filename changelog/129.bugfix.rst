@@ -1,0 +1,1 @@
+Switched the backend to use ``draw_idle`` to avoid Jupyter lab widget issues.
