@@ -57,15 +57,9 @@ jobs:
       - run: python -m pip install -U --user twine
       - run: python -m twine check dist/*
 
-<<<<<<<
   docs:
     needs: [core]
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v2  # zizmor: ignore[unpinned-uses]
-=======
-  test:
-    needs: [core, sdist_verify]
     uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v3  # zizmor: ignore[unpinned-uses]
->>>>>>>
     with:
       default_python: '3.13'
       submodules: false
