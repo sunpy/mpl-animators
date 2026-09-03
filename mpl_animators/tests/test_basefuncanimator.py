@@ -219,4 +219,4 @@ def test_lineanimator_figure():
     xdata = np.tile(np.linspace(
         0, 100, (data_shape0[plot_axis0] + 1)), (data_shape0[slider_axis0], 1))
     ani = LineAnimator(data0, plot_axis_index=plot_axis0, axis_ranges=[None, xdata])
-    return ani.fig
+    return ani.parent_fig
