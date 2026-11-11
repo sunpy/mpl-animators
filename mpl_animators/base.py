@@ -91,15 +91,6 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         self.button_labels = button_labels or []
         self.num_buttons = len(self.button_func)
 
-        if not fig:
-            fig = plt.figure()
-        self.fig = fig
-
-        self.data = data
-        self.interval = interval
-        self.if_colorbar = colorbar
-        self.imshow_kwargs = kwargs
-
         if len(slider_functions) != len(slider_ranges):
             raise ValueError("slider_functions and slider_ranges must be the same length.")
 
@@ -111,6 +102,18 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         self.slider_functions = slider_functions
         self.slider_ranges = slider_ranges
         self.slider_labels = slider_labels or [''] * len(slider_functions)
+
+        if not fig:
+            fig = plt.figure(layout="constrained")
+        self.parent_fig = fig
+        self.subfigs = None
+        self._setup_subfigure_grid()
+        self.fig = self.subfigs[0]
+
+        self.data = data
+        self.interval = interval
+        self.if_colorbar = colorbar
+        self.imshow_kwargs = kwargs
 
         # Set active slider
         self.active_slider = 0
@@ -128,8 +131,8 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
         #
         # Only do this if figure has a manager, so directly constructed figures
         # (ie. via matplotlib.figure.Figure()) work.
-        if hasattr(self.fig.canvas, "manager") and self.fig.canvas.manager is not None:
-            plt.sca(self.axes)
+        # if isinstance(self.axes, mpl.axes.Axes) and hasattr(self.fig.canvas, "manager") and self.fig.canvas.manager is not None:
+        #     plt.sca(self.axes)
 
         # Do Plot
         self.im = self.plot_start_image(self.axes)
@@ -267,90 +270,53 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
 # =============================================================================
 #   Build the figure and place the widgets
 # =============================================================================
+    def _setup_subfigure_grid(self):
+        slider_height = 0.075 * self.num_sliders
+        button_height = 0.075 if self.num_buttons else 0
+        main_figure_height = 1.0 - slider_height - button_height
+
+        self.subfigs = self.parent_fig.subfigures(
+            nrows=3,
+            height_ratios=[main_figure_height, button_height, slider_height]
+        )
+
     def _setup_main_axes(self):
         """
         Allow replacement of main axes by subclassing.
         This method must set the ``axes`` attribute.
         """
         if self.axes is None:
-            self.axes = self.fig.add_subplot(111)
+            self.axes = self.subfigs[0].add_subplot(111)
 
     def _make_axes_grid(self):
         self._setup_main_axes()
 
-        # Split up the current axes so there is space for start & stop buttons
-        self.divider = make_axes_locatable(self.axes)
-        pad = 0.01  # Padding between axes
-        pad_size = Size.Fraction(pad, Size.AxesX(self.axes))
-        large_pad_size = Size.Fraction(0.1, Size.AxesY(self.axes))
-
-        button_grid = max((7, self.num_buttons))
-
-        # Define size of useful axes cells, 50% each in x 20% for buttons in y.
-        ysize = Size.Fraction((1.-2.*pad)/15., Size.AxesY(self.axes))
-        xsize = Size.Fraction((1.-2.*pad)/button_grid, Size.AxesX(self.axes))
-
-        # Set up grid, 3x3 with cells for padding.
-        if self.num_buttons > 0:
-            horiz = [xsize] + [pad_size, xsize]*(button_grid-1)
-            vert = [ysize, pad_size] * self.num_sliders + \
-                   [large_pad_size, large_pad_size, Size.AxesY(self.axes)]
-        else:
-            vert = [ysize, large_pad_size] * self.num_sliders + \
-                   [large_pad_size, Size.AxesY(self.axes)]
-            horiz = [Size.Fraction(0.1, Size.AxesX(self.axes))] + \
-                    [Size.Fraction(0.05, Size.AxesX(self.axes))] + \
-                    [Size.Fraction(0.65, Size.AxesX(self.axes))] + \
-                    [Size.Fraction(0.1, Size.AxesX(self.axes))] + \
-                    [Size.Fraction(0.1, Size.AxesX(self.axes))]
-
-        self.divider.set_horizontal(horiz)
-        self.divider.set_vertical(vert)
-        self.button_ny = len(vert) - 3
-
         # If we are going to add a colorbar it'll need an axis next to the plot
         if self.if_colorbar:
-            nx1 = -3
-            self.cax = self.fig.add_axes((0., 0., 0.141, 1.))
-            locator = self.divider.new_locator(nx=-2, ny=len(vert)-1, nx1=-1)
-            self.cax.set_axes_locator(locator)
-        else:
-            # Main figure spans all horiz and is in the top (2) in vert.
-            nx1 = -1
-
-        self.axes.set_axes_locator(
-            self.divider.new_locator(nx=0, ny=len(vert)-1, nx1=nx1))
+            self.cax = self.axes.inset_axes([1.05, 0.0, 0.05, 1.0])
 
     def _add_widgets(self):
-        self.buttons = []
-        for i in range(0, self.num_buttons):
-            x = i * 2
-            # The i+1/10. is a bug that if you make two axes directly on top of
-            # one another then the divider doesn't work.
-            self.buttons.append(self.fig.add_axes((0., 0., 0.+i/10., 1.)))
-            locator = self.divider.new_locator(nx=x, ny=self.button_ny)
-            self.buttons[-1].set_axes_locator(locator)
-            self.buttons[-1]._button = widgets.Button(self.buttons[-1],
-                                                      self.button_labels[i])
-            self.buttons[-1]._button.on_clicked(partial(self.button_func[i], self))
+        # Add the custom button row
+        if self.num_buttons:
+            self.buttons = self.subfigs[1].subplots(ncols=self.num_buttons)
+            for i, bax in enumerate(self.buttons):
+                bax._button = widgets.Button(bax,
+                                             self.button_labels[i])
+                bax._button.on_clicked(partial(self.button_func[i], self))
 
-        self.sliders = []
-        self.slider_buttons = []
-        for i in range(self.num_sliders):
-            y = i * 2
-            self.sliders.append(self.fig.add_axes((0., 0., 0.01+i/10., 1.)))
-            if self.num_buttons == 0:
-                nx1 = 3
-            else:
-                nx1 = -2
-            locator = self.divider.new_locator(nx=2, ny=y, nx1=nx1)
-            self.sliders[-1].set_axes_locator(locator)
-            self.sliders[-1].text(0.5, 0.5, self.slider_labels[i],
-                                  transform=self.sliders[-1].transAxes,
-                                  horizontalalignment="center",
-                                  verticalalignment="center")
+        controls_axes = self.subfigs[2].subplots(
+            ncols=2,
+            nrows=self.num_sliders,
+            width_ratios=[0.1, 0.9],
+            squeeze=False,
+        )
 
-            sframe = widgets.Slider(self.sliders[-1], "",
+        self.slider_buttons = controls_axes[:, 0].tolist()
+        self.sliders = controls_axes[:, 1].tolist()
+
+        for i, saxis in enumerate(self.sliders):
+            sframe = widgets.Slider(saxis,
+                                    "",  # We add label manually
                                     self.slider_ranges[i][0],
                                     self.slider_ranges[i][-1]-1,
                                     valinit=self.slider_ranges[i][0],
@@ -358,17 +324,28 @@ class BaseFuncAnimator(metaclass=abc.ABCMeta):
             sframe.on_changed(partial(self._slider_changed, slider=sframe))
             sframe.slider_ind = i
             sframe.cval = sframe.val
-            self.sliders[-1]._slider = sframe
+            saxis._slider = sframe
 
-            self.slider_buttons.append(
-                self.fig.add_axes((0., 0., 0.05+y/10., 1.)))
-            locator = self.divider.new_locator(nx=0, ny=y)
+            # Add the label as text in the middle of the axis
+            saxis.text(
+                0.5,
+                0.5,
+                self.slider_labels[i],
+                transform=saxis.transAxes,
+                horizontalalignment="center",
+                verticalalignment="center",
+                fontsize="x-small",
+            )
 
-            self.slider_buttons[-1].set_axes_locator(locator)
-            butt = widgets.Button(self.slider_buttons[-1], ">")
-            butt.on_clicked(partial(self._click_slider_button, button=butt, slider=sframe))
+        for i, sbaxis in enumerate(self.slider_buttons):
+            butt = widgets.Button(sbaxis, ">")
+            butt.on_clicked(partial(
+                self._click_slider_button,
+                button=butt,
+                slider=self.sliders[i]._slider
+            ))
             butt.clicked = False
-            self.slider_buttons[-1]._button = butt
+            sbaxis._button = butt
 
 # =============================================================================
 #   Widget callbacks
