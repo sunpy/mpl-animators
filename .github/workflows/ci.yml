@@ -40,17 +40,9 @@ jobs:
       coverage: codecov-oidc
       toxdeps: tox-pypi-filter
       envs: |
-<<<<<<<
-        - windows: py313
-        - macos: py312
-        - linux: py313
-=======
         - linux: py314
         - windows: py312
         - macos: py313
-        - linux: py312-oldestdeps
-        - linux: py314-devdeps
->>>>>>>
 
   sdist_verify:
     runs-on: ubuntu-latest
